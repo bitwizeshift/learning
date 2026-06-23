@@ -1,0 +1,22 @@
+{{ define "main" }}
+<div class="container">
+  <section class="hero">
+    <h1 class="hero__title">{{ site.Title }}</h1>
+    {{ with site.Params.tagline }}<p class="hero__lead">{{ . }}</p>{{ end }}
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  </section>
+
+  {{ range sort hugo.Data.dimensions.dimension "weight" }}
+    {{ $dim := . }}
+    <section class="dim-group">
+      <h2 class="dim-group__title">{{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span></h2>
+      <div class="tiles">
+        {{ range $term, $meta := index hugo.Data $dim.data }}
+          {{ $count := len (index site.Taxonomies $dim.taxonomy $term) }}
+          {{ partial "tile.html" (dict "data" $dim.data "term" $term "count" $count) }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,2 @@
+/* footer-specific tweaks live in layout.css; placeholder for future overrides */
+.footer__meta { color: var(--text-muted); }

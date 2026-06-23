@@ -1,0 +1,14 @@
+{{- /*
+  GitHub-style badge for a single taxonomy term: rounded rect + outline + icon + text.
+  Input: (dict "data" "toolchains" "term" "cpp" "emphasis" false "link" true)
+*/ -}}
+{{- $m := partial "term-meta.html" (dict "data" .data "term" .term) }}
+{{- $emphasis := .emphasis | default false }}
+{{- $link := .link | default true }}
+{{- $class := printf "badge%s" (cond $emphasis " badge--type" "") }}
+{{- $style := printf "--accent:%s;--accent-line:%s" $m.color $m.outline }}
+{{- if $link -}}
+<a class="{{ $class }}" href="{{ $m.url }}" style="{{ $style | safeCSS }}"{{ with $m.desc }} title="{{ . }}"{{ end }}>{{ partial "icon.html" $m.icon }}<span>{{ $m.name }}</span></a>
+{{- else -}}
+<span class="{{ $class }}" style="{{ $style | safeCSS }}">{{ partial "icon.html" $m.icon }}<span>{{ $m.name }}</span></span>
+{{- end -}}

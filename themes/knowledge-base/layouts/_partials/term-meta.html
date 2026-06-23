@@ -1,0 +1,20 @@
+{{- /*
+  Resolves per-term metadata from site.Data with safe fallbacks.
+  Input : (dict "data" "toolchains" "term" "cpp")
+  Output: dict { name plural icon color outline desc url }
+*/ -}}
+{{- $data := .data }}
+{{- $term := .term }}
+{{- $meta := or (index hugo.Data $data $term) dict }}
+{{- $name := or $meta.name (humanize $term) }}
+{{- $fallbackIcon := strings.TrimSuffix "s" $data }}
+{{- $res := dict
+  "name"    $name
+  "plural"  (or $meta.plural $name)
+  "icon"    (or $meta.icon $fallbackIcon)
+  "color"   (or $meta.color "#64748b")
+  "outline" (or $meta.outline "#475569")
+  "desc"    (or $meta.desc "")
+  "url"     (printf "/%s/%s/" $data $term | relLangURL)
+}}
+{{- return $res }}

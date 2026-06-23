@@ -1,0 +1,37 @@
+{{ define "main" }}
+<div class="container container--article">
+  <article class="post">
+    <header class="post__header">
+      <h1 class="post__title"{{ with .Params.id }} id="{{ . }}"{{ end }}>
+        {{ with .Params.id }}<a class="id-badge id-badge--lg" href="#{{ . }}" title="Permalink">{{ . }}</a>{{ end }}
+        <span>{{ .Title }}</span>
+      </h1>
+      <div class="badges post__badges">
+        {{ with .Params.types }}{{ partial "badge.html" (dict "data" "types" "term" (index . 0) "emphasis" true) }}{{ end }}
+        {{ range .Params.toolchains }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}
+        {{ range .Params.kinds }}{{ partial "badge.html" (dict "data" "kinds" "term" .) }}{{ end }}
+      </div>
+      {{/* Reading time is shown only where it adds value (e.g. tutorials),
+           or when a page opts in with `showReadingTime = true`. */}}
+      {{ $type := index (.Params.types | default slice) 0 }}
+      {{ $showReadingTime := or (eq $type "tutorial") (eq .Params.showReadingTime true) }}
+      {{ if $showReadingTime }}
+        <div class="post__meta">
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+      {{ end }}
+    </header>
+
+    {{ if and (.Params.toc | default true) (gt (len .TableOfContents) 60) }}
+      <aside class="toc">
+        <p class="toc__title">On this page</p>
+        {{ .TableOfContents }}
+      </aside>
+    {{ end }}
+
+    <div class="prose">
+      {{ .Content }}
+    </div>
+  </article>
+</div>
+{{ end }}

@@ -1,0 +1,5 @@
+<figure class="blockquote">
+  <span class="blockquote__mark">{{ partial "icon.html" "quote" }}</span>
+  <blockquote>{{ .Page.RenderString .Inner }}</blockquote>
+  {{ with .Get "cite" }}<figcaption>&mdash; <cite>{{ . }}</cite></figcaption>{{ end }}
+</figure>

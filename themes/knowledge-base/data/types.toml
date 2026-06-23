@@ -1,0 +1,33 @@
+# Per-term metadata for the `types` taxonomy. A post has exactly ONE type.
+
+[best-practice]
+  name    = "Best Practice"
+  plural  = "Best Practices"
+  icon    = "best-practice"
+  color   = "#2e7d32"
+  outline = "#1b5e20"
+  desc    = "Battle-tested recommendations to follow."
+
+[guide]
+  name    = "Guide"
+  plural  = "Guides"
+  icon    = "guide"
+  color   = "#1565c0"
+  outline = "#0d47a1"
+  desc    = "Task-oriented, how-to walkthroughs."
+
+[tutorial]
+  name    = "Tutorial"
+  plural  = "Tutorials"
+  icon    = "tutorial"
+  color   = "#6a1b9a"
+  outline = "#4a148c"
+  desc    = "Step-by-step learning from the ground up."
+
+[reference]
+  name    = "Reference"
+  plural  = "Reference"
+  icon    = "reference"
+  color   = "#c62828"
+  outline = "#8e0000"
+  desc    = "Lookup-style, comprehensive detail."

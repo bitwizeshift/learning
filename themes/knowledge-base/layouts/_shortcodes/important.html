@@ -1,0 +1,1 @@
+{{ partial "alert.html" (dict "kind" "important" "icon" "important" "title" (.Get "title" | default "Important") "content" (.Page.RenderString .Inner)) }}

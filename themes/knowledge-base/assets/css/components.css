@@ -1,0 +1,154 @@
+/* ============================================================
+   Badges, id badges, listing rows, groups, term/composite heads
+   ============================================================ */
+
+/* ---- GitHub-style term badges ---- */
+.badges { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.badges--lead { margin-bottom: 1rem; }
+.badges__x { color: var(--text-muted); font-weight: 700; }
+
+.badge {
+  --accent: #64748b;
+  --accent-line: #475569;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--accent-line);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge:hover { text-decoration: none; background: color-mix(in srgb, var(--accent) 22%, var(--bg)); }
+.badge .icon { width: 1em; height: 1em; color: var(--accent); }
+@media (prefers-color-scheme: dark) {
+  .badge { color: color-mix(in srgb, var(--accent) 75%, white); }
+  .badge .icon { color: color-mix(in srgb, var(--accent) 70%, white); }
+}
+.badge--type {
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent-line);
+}
+.badge--type .icon { color: #fff; }
+.badge--type:hover { background: var(--accent-line); }
+
+/* ---- id badge (stable rule code) ---- */
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: .15rem .45rem;
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  border-radius: var(--radius-sm);
+}
+.id-badge:hover { text-decoration: none; background: color-mix(in srgb, var(--primary) 22%, var(--bg)); }
+.id-badge--lg { font-size: .8rem; padding: .2rem .5rem; }
+
+/* ---- post listing rows ---- */
+.post-rows { display: flex; flex-direction: column; gap: .25rem; }
+.post-row {
+  padding: .85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.post-row:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
+/* Title + badges share a line, wrapping the badge group to the next line only
+   when the row gets too tight. */
+.post-row__line { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; }
+.post-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
+.post-row__line .badges { gap: .35rem; }
+.post-row__summary { margin-top: .45rem; color: var(--text-muted); font-size: .9rem; line-height: 1.55; }
+.post-row__summary > :first-child { margin-top: 0; }
+.post-row__summary p { margin: 0; }
+.post-row__summary p + p { margin-top: .5rem; }
+.post-row__summary strong, .post-row__summary b { color: var(--text); font-weight: 700; }
+.post-row__summary a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.post-row__summary code {
+  font-family: var(--font-mono);
+  font-size: .85em;
+  padding: .1em .35em;
+  background: var(--code-inline-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 5px;
+}
+.post-row__summary .highlight {
+  margin: .55rem 0 0;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.post-row__summary pre.chroma {
+  margin: 0;
+  padding: .6rem .8rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  line-height: 1.5;
+}
+
+/* ---- grouped sections ---- */
+.groups { display: flex; flex-direction: column; gap: 2rem; }
+.group { scroll-margin-top: calc(var(--header-h) + 1rem); }
+.group__title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 1.15rem;
+  margin-bottom: .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.group__title a { display: inline-flex; align-items: center; gap: .5rem; color: var(--heading); }
+.group__title a:hover { color: var(--accent-line); text-decoration: none; }
+.group__title .icon { color: var(--accent); }
+.group__count {
+  margin-left: auto;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--accent-line);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-radius: 999px;
+  padding: .1rem .55rem;
+}
+
+/* ---- term / composite headers ---- */
+.term-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--accent);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface));
+}
+.term-head__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  flex: 0 0 auto;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.term-head__icon .icon { width: 1.9em; height: 1.9em; }
+.term-head__desc { margin-top: .3rem; color: var(--text-muted); }
+.term-head__count { margin-top: .5rem; font-size: .82rem; font-weight: 600; color: var(--accent-line); }
+
+.composite-head { display: flex; flex-direction: column; gap: .6rem; }
+.composite-head__count { color: var(--text-muted); font-weight: 600; font-size: .9rem; }

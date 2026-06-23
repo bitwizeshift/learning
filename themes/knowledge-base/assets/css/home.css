@@ -1,0 +1,87 @@
+/* ============================================================
+   Home page: hero, dimension groups, tiles
+   ============================================================ */
+
+.hero {
+  padding: 2.5rem 0 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
+.hero__title {
+  font-size: clamp(2rem, 1.4rem + 3vw, 3rem);
+  background: linear-gradient(120deg, var(--heading), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero__lead {
+  margin-top: .75rem;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 60ch;
+}
+
+.dim-group { margin-bottom: 3rem; }
+.dim-group__title {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: 1.35rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--border);
+}
+.dim-group__title .icon { color: var(--primary); }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.tile {
+  --tile-accent: var(--accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding: 1.25rem 1.1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--accent);
+}
+.tile:hover {
+  text-decoration: none;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+.tile__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  margin-bottom: .35rem;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.tile__icon .icon { width: 1.6em; height: 1.6em; }
+.tile__name { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
+.tile__desc { font-size: .85rem; color: var(--text-muted); line-height: 1.45; }
+.tile__count {
+  margin-top: .4rem;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--accent-line);
+}

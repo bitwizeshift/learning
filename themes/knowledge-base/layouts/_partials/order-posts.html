@@ -1,0 +1,14 @@
+{{- /*
+  Orders posts by id (ascending) when present, then the rest alphabetically by
+  title. Single source of truth for listing order across all list templates.
+  Input : a pages collection
+  Output: an ordered slice of pages
+*/ -}}
+{{- $withId := slice }}
+{{- $noId := slice }}
+{{- range . }}
+  {{- if .Params.id }}{{ $withId = $withId | append . }}{{ else }}{{ $noId = $noId | append . }}{{ end }}
+{{- end }}
+{{- $ordered := sort $withId "Params.id" }}
+{{- range sort $noId "Title" }}{{ $ordered = $ordered | append . }}{{ end }}
+{{- return $ordered }}

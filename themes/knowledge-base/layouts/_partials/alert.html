@@ -1,0 +1,10 @@
+{{- /* Shared renderer for alert/callout shortcodes. */ -}}
+{{- $kind := .kind }}
+{{- $icon := .icon | default $kind }}
+<div class="alert alert--{{ $kind }}">
+  <span class="alert__icon">{{ partial "icon.html" $icon }}</span>
+  <div class="alert__body">
+    {{- with .title }}<p class="alert__title">{{ . }}</p>{{ end }}
+    {{ .content }}
+  </div>
+</div>

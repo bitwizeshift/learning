@@ -1,0 +1,23 @@
+/* Chroma syntax themes (light unconditional, dark self-wrapped in a media query) */
+@import "chroma-light.css";
+@import "chroma-dark.css";
+
+/* Code block layout (static syntax highlighting, zero JS) */
+.prose .highlight {
+  margin: 1.4rem 0;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.prose .highlight pre.chroma {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: .86rem;
+  line-height: 1.6;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+.prose pre.chroma code { font-family: inherit; }

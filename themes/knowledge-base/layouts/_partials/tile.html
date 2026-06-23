@@ -1,0 +1,12 @@
+{{- /*
+  Icon tile/card for a taxonomy term (home page + taxonomy index).
+  Input: (dict "data" "toolchains" "term" "cpp" "count" 3)
+*/ -}}
+{{- $m := partial "term-meta.html" (dict "data" .data "term" .term) }}
+{{- $count := .count }}
+<a class="tile" href="{{ $m.url }}" style="{{ printf "--accent:%s;--accent-line:%s" $m.color $m.outline | safeCSS }}">
+  <span class="tile__icon">{{ partial "icon.html" $m.icon }}</span>
+  <span class="tile__name">{{ $m.name }}</span>
+  {{- with $m.desc }}<span class="tile__desc">{{ . }}</span>{{ end }}
+  {{- with $count }}<span class="tile__count">{{ . }} post{{ if ne . 1 }}s{{ end }}</span>{{ end }}
+</a>

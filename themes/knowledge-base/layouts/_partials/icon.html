@@ -1,0 +1,17 @@
+{{- /*
+  Renders one icon from the inline sprite.
+  Accepts either a plain icon name string, or a dict:
+    {{ partial "icon.html" "cplusplus" }}
+    {{ partial "icon.html" (dict "name" "cplusplus" "class" "icon-lg") }}
+*/ -}}
+{{- $name := "" }}
+{{- $class := "" }}
+{{- if reflect.IsMap . }}
+  {{- $name = .name }}
+  {{- $class = .class | default "" }}
+{{- else }}
+  {{- $name = . }}
+{{- end -}}
+{{- with $name -}}
+<svg class="icon{{ with $class }} {{ . }}{{ end }}" aria-hidden="true" focusable="false"><use href="#icon-{{ . }}"></use></svg>
+{{- end -}}

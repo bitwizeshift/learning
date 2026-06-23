@@ -1,0 +1,23 @@
+# Per-term metadata for the `kinds` taxonomy (formerly "category").
+# A post may belong to one or more kinds.
+
+[testing]
+  name    = "Testing"
+  icon    = "testing"
+  color   = "#00897b"
+  outline = "#00695c"
+  desc    = "Verification, test design, and tooling."
+
+[architecture]
+  name    = "Architecture"
+  icon    = "architecture"
+  color   = "#ef6c00"
+  outline = "#bf360c"
+  desc    = "System structure and high-level design."
+
+[design]
+  name    = "Design"
+  icon    = "design"
+  color   = "#ad1457"
+  outline = "#880e4f"
+  desc    = "APIs, interfaces, and component design."

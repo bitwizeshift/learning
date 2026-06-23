@@ -1,0 +1,23 @@
+{{- /*
+  Builds a single inline SVG sprite from every assets/icons/*.svg file.
+  Each icon becomes <symbol id="icon-<name>">, referenced via partial "icon".
+  Two source families are normalized:
+    - stroke icons (Lucide): keep stroke="currentColor", fill="none"
+    - fill icons   (Simple Icons): force fill="currentColor"
+*/ -}}
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+  {{- range resources.Match "icons/*.svg" }}
+    {{- $name := strings.TrimSuffix ".svg" .Name }}
+    {{- $name = path.Base $name }}
+    {{- $c := .Content }}
+    {{- $isStroke := strings.Contains $c "stroke=\"currentColor\"" }}
+    {{- $inner := $c }}
+    {{- $inner = replaceRE `(?s)^.*?<svg[^>]*>` "" $inner }}
+    {{- $inner = replaceRE `(?s)</svg>\s*$` "" $inner }}
+    {{- $inner = replaceRE `(?s)<title>.*?</title>` "" $inner }}
+    {{- $attrs := cond $isStroke `fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"` `fill="currentColor"` }}
+    <symbol id="icon-{{ $name }}" viewBox="0 0 24 24" {{ $attrs | safeHTMLAttr }}>{{ $inner | safeHTML }}</symbol>
+  {{- end }}
+  </defs>
+</svg>

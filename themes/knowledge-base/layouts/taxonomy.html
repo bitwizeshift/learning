@@ -1,0 +1,14 @@
+{{ define "main" }}
+{{ $data := .Data.Plural }}
+<div class="container">
+  <header class="page-head">
+    <h1 class="page-head__title">{{ partial "icon.html" (strings.TrimSuffix "s" $data) }}<span>{{ .Title }}</span></h1>
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  </header>
+  <div class="tiles">
+    {{ range $term, $wp := .Data.Terms }}
+      {{ partial "tile.html" (dict "data" $data "term" $term "count" (len $wp)) }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}

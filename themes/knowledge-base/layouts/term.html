@@ -1,0 +1,18 @@
+{{ define "main" }}
+{{ $isCross := eq .Data.Plural "toolchains" }}
+{{ $groupData := cond $isCross "types" "toolchains" }}
+{{ $self := partial "term-meta.html" (dict "data" .Data.Plural "term" .Data.Term) }}
+<div class="container">
+  <header class="page-head term-head" style="{{ printf "--accent:%s;--accent-line:%s" $self.color $self.outline | safeCSS }}">
+    <span class="term-head__icon">{{ partial "icon.html" $self.icon }}</span>
+    <div class="term-head__body">
+      <p class="eyebrow">{{ .Data.Singular | humanize | title }}</p>
+      <h1 class="page-head__title">{{ $self.name }}</h1>
+      {{ with $self.desc }}<p class="term-head__desc">{{ . }}</p>{{ end }}
+      <p class="term-head__count">{{ len .Pages }} post{{ if ne (len .Pages) 1 }}s{{ end }}, grouped by {{ strings.TrimSuffix "s" $groupData }}</p>
+    </div>
+  </header>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ partial "grouped-list.html" (dict "pages" .Pages "groupData" $groupData "hide" (slice (dict "data" .Data.Plural "term" .Data.Term))) }}
+</div>
+{{ end }}

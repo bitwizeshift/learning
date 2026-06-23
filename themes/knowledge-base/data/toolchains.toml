@@ -1,0 +1,27 @@
+# Per-term metadata for the `toolchains` taxonomy.
+#   name    : display name
+#   icon    : sprite symbol id (assets/icons/<icon>.svg -> #icon-<icon>)
+#   color   : primary / fill accent
+#   outline : border / outline accent
+#   desc    : short description (tiles, term page)
+
+[cpp]
+  name    = "C++"
+  icon    = "cplusplus"
+  color   = "#00599C"
+  outline = "#004482"
+  desc    = "Modern C++ guidance and idioms."
+
+[go]
+  name    = "Go"
+  icon    = "go"
+  color   = "#00ADD8"
+  outline = "#007D9C"
+  desc    = "Idiomatic Go practices and patterns."
+
+[python]
+  name    = "Python"
+  icon    = "python"
+  color   = "#3776AB"
+  outline = "#2B5B84"
+  desc    = "Pythonic techniques and tooling."

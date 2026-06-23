@@ -1,0 +1,28 @@
+{{- /*
+  Renders a set of posts grouped by a taxonomy dimension.
+  Input: (dict "pages" <pages> "groupData" "toolchains" "hide" <slice>)
+  `hide` lists (data, term) pairs already fixed by the page; each group also
+  hides its own term so rows don't repeat the group heading.
+  A post can appear under multiple groups (multi-valued taxonomies).
+*/ -}}
+{{- $pages := .pages }}
+{{- $groupData := .groupData }}
+{{- $hide := .hide | default slice }}
+<div class="groups">
+  {{- range $gterm, $gmeta := index hugo.Data $groupData }}
+    {{- $matched := where $pages (printf "Params.%s" $groupData) "intersect" (slice $gterm) }}
+    {{- with $matched }}
+      {{- $m := partial "term-meta.html" (dict "data" $groupData "term" $gterm) }}
+      {{- $rowHide := $hide | append (dict "data" $groupData "term" $gterm) }}
+      <section class="group" style="{{ printf "--accent:%s;--accent-line:%s" $m.color $m.outline | safeCSS }}">
+        <h2 class="group__title">
+          <a href="{{ $m.url }}">{{ partial "icon.html" $m.icon }}<span>{{ $m.name }}</span></a>
+          <span class="group__count">{{ len . }}</span>
+        </h2>
+        <div class="post-rows">
+          {{- range (partial "order-posts.html" .) }}{{ partial "post-list.html" (dict "page" . "hide" $rowHide) }}{{- end }}
+        </div>
+      </section>
+    {{- end }}
+  {{- end }}
+</div>

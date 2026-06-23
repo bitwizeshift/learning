@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{ $tool := .Params.toolchain }}
+{{ $otherTax := .Params.otherTaxonomy }}
+{{ $otherTerm := .Params.otherTerm }}
+
+{{ $toolPages := slice }}
+{{ with index site.Taxonomies.toolchains $tool }}{{ $toolPages = .Pages }}{{ end }}
+{{ $otherPages := slice }}
+{{ with index site.Taxonomies $otherTax $otherTerm }}{{ $otherPages = .Pages }}{{ end }}
+{{ $matched := intersect $toolPages $otherPages }}
+{{ $ordered := partial "order-posts.html" $matched }}
+
+<div class="container">
+  <header class="page-head composite-head">
+    <h1 class="page-head__title">{{ .Title }}</h1>
+    <div class="badges badges--lead">
+      {{ partial "badge.html" (dict "data" "toolchains" "term" $tool) }}
+      {{ partial "badge.html" (dict "data" $otherTax "term" $otherTerm "emphasis" (eq $otherTax "types")) }}
+    </div>
+    <p class="composite-head__count">{{ len $ordered }} post{{ if ne (len $ordered) 1 }}s{{ end }}</p>
+  </header>
+  {{ $hide := slice (dict "data" "toolchains" "term" $tool) (dict "data" $otherTax "term" $otherTerm) }}
+  {{ if $ordered }}
+    <div class="post-rows">
+      {{ range $ordered }}{{ partial "post-list.html" (dict "page" . "hide" $hide) }}{{ end }}
+    </div>
+  {{ else }}
+    <p class="empty">No posts yet for this combination.</p>
+  {{ end }}
+</div>
+{{ end }}

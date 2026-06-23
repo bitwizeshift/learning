@@ -1,0 +1,4 @@
+<div class="footer__inner">
+  <p>{{ with site.Copyright }}{{ replace . "{year}" (string now.Year) | markdownify }}{{ else }}&copy; {{ now.Year }} {{ site.Title }}.{{ end }}</p>
+  <p class="footer__meta">Built with <a href="https://gohugo.io/">Hugo</a> &middot; knowledge-base theme</p>
+</div>

@@ -1,0 +1,73 @@
+/* ============================================================
+   Page shell: header, main, footer
+   ============================================================ */
+
+.site-main { flex: 1 0 auto; }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  min-height: var(--header-h);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+  font-size: 1.05rem;
+}
+.brand:hover { text-decoration: none; color: var(--primary); }
+.brand .icon { color: var(--primary); width: 1.3em; height: 1.3em; }
+
+.site-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+.footer__inner {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .5rem 1.5rem;
+}
+.footer__inner a { color: var(--text); font-weight: 600; }
+
+/* Generic page header */
+.page-head { margin-bottom: 2rem; }
+.page-head__title {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: clamp(1.8rem, 1.3rem + 2vw, 2.5rem);
+}
+.page-head__title .icon { color: var(--primary); width: 1.1em; height: 1.1em; }
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}

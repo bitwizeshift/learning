@@ -1,0 +1,32 @@
+{{/*
+  Generates composite intersection pages at build time:
+    every `cross` toolchain  ×  every term of each `composite` dimension.
+  e.g. (cpp × best-practice) -> /cpp/best-practice/  "C++ Best Practices"
+  Reads merged site.Data, so any site using this theme gets these pages for free.
+*/}}
+{{ $ctx := . }}
+{{ $toolchains := hugo.Data.toolchains }}
+{{ range hugo.Data.dimensions.dimension }}
+  {{ if .composite }}
+    {{ $tax := .taxonomy }}
+    {{ $dataName := .data }}
+    {{ range $term, $meta := index hugo.Data $dataName }}
+      {{ $termName := or $meta.plural $meta.name (humanize $term) }}
+      {{ range $tool, $tmeta := $toolchains }}
+        {{ $toolName := or $tmeta.name (humanize $tool) }}
+        {{ $ctx.AddPage (dict
+          "kind"   "page"
+          "path"   (printf "/%s/%s" $tool $term)
+          "title"  (printf "%s %s" $toolName $termName)
+          "layout" "composite"
+          "params" (dict
+            "toolchain"     $tool
+            "otherTaxonomy" $tax
+            "otherTerm"     $term
+            "composite"     true
+          )
+        ) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

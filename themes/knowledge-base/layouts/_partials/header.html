@@ -1,0 +1,49 @@
+{{- $dims := sort hugo.Data.dimensions.dimension "weight" }}
+<a class="brand" href="{{ "/" | relLangURL }}">
+  {{ partial "icon.html" "home" }}<span>{{ site.Title }}</span>
+</a>
+
+<input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+<label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation">
+  {{ partial "icon.html" "menu" }}
+</label>
+
+<nav class="nav" aria-label="Main navigation">
+  <ul class="nav__list">
+    <li class="nav__item">
+      <a class="nav__link" href="{{ "/" | relLangURL }}">{{ partial "icon.html" "home" }}<span>Home</span></a>
+    </li>
+    {{- range $dims }}
+      {{- if .inNav }}
+        {{- $dim := . }}
+        <li class="nav__item nav__item--dropdown">
+          <a class="nav__link" href="{{ printf "/%s/" $dim.taxonomy | relLangURL }}">
+            {{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span>{{ partial "icon.html" "chevron-down" }}
+          </a>
+          <ul class="dropdown">
+            {{- range $term, $meta := index hugo.Data $dim.data }}
+              {{- $tm := partial "term-meta.html" (dict "data" $dim.data "term" $term) }}
+              <li class="dropdown__item">
+                <a class="dropdown__link" href="{{ $tm.url }}" style="{{ printf "--accent:%s" $tm.color | safeCSS }}">
+                  {{ partial "icon.html" $tm.icon }}<span>{{ $tm.name }}</span>
+                  <span class="dropdown__more">{{ partial "icon.html" "chevron-down" }}</span>
+                </a>
+                <ul class="submenu">
+                  <li class="submenu__head">{{ $tm.name }} by toolchain</li>
+                  {{- range $tool, $tmeta := hugo.Data.toolchains }}
+                    {{- $toolm := partial "term-meta.html" (dict "data" "toolchains" "term" $tool) }}
+                    <li>
+                      <a href="{{ printf "/%s/%s/" $tool $term | relLangURL }}" style="{{ printf "--accent:%s" $toolm.color | safeCSS }}">
+                        {{ partial "icon.html" $toolm.icon }}<span>{{ $toolm.name }} {{ $tm.name }}</span>
+                      </a>
+                    </li>
+                  {{- end }}
+                </ul>
+              </li>
+            {{- end }}
+          </ul>
+        </li>
+      {{- end }}
+    {{- end }}
+  </ul>
+</nav>
