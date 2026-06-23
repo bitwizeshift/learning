@@ -79,6 +79,15 @@
 .prose details[open] summary::before { transform: rotate(45deg); }
 .prose summary:hover { color: var(--primary); }
 
+/* ---- Mermaid diagrams (progressive enhancement) ---- */
+.mermaid-src { display: none; }
+.mermaid-rendered {
+  margin: 1.5rem 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid-rendered svg { max-width: 100%; height: auto; margin-inline: auto; }
+
 /* ---- Alert / callout shortcodes ---- */
 .alert {
   --alert: var(--primary);

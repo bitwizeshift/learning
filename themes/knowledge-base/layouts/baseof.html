@@ -17,5 +17,6 @@
   <footer class="site-footer">
     {{ partial "footer.html" . }}
   </footer>
+  {{ if .Store.Get "hasMermaid" }}{{ partial "mermaid.html" . }}{{ end }}
 </body>
 </html>

@@ -1,0 +1,33 @@
+{{- /*
+  Loaded only on pages that contain a ```mermaid fence (gated by the
+  hasMermaid page store flag in baseof). Renders each diagram with Mermaid from
+  a reputable pinned CDN and replaces the highlighted fallback with the SVG.
+  On any failure the fallback is left untouched.
+*/ -}}
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/+esm';
+
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'strict',
+    suppressErrorRendering: true,   // a parse error leaves the highlighted fallback, no error graphic
+    theme: dark ? 'dark' : 'default',
+  });
+
+  document.querySelectorAll('.mermaid-block').forEach(async (block, i) => {
+    const src = block.querySelector('.mermaid-src');
+    if (!src) return;
+    try {
+      const { svg } = await mermaid.render('mermaid-' + i, src.textContent.trim());
+      const out = document.createElement('div');
+      out.className = 'mermaid-rendered';
+      out.innerHTML = svg;
+      const fallback = block.querySelector('.mermaid-fallback');
+      if (fallback) fallback.replaceWith(out); else block.appendChild(out);
+      src.remove();
+    } catch (e) {
+      console.error('Mermaid render failed:', e);
+    }
+  });
+</script>

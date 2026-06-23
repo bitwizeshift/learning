@@ -13,9 +13,6 @@
 
 <nav class="nav" aria-label="Main navigation">
   <ul class="nav__list">
-    <li class="nav__item">
-      <a class="nav__link" href="{{ "/" | relLangURL }}">{{ partial "icon.html" "home" }}<span>Home</span></a>
-    </li>
     {{- range $type, $tmeta := index hugo.Data $typeData }}
       {{- $tm := partial "term-meta.html" (dict "data" $typeData "term" $type) }}
       <li class="nav__item nav__item--dropdown">

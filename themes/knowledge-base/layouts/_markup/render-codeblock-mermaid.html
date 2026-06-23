@@ -1,0 +1,16 @@
+{{- /*
+  Code-block render hook for ```mermaid fences.
+  Emits a hidden raw source (consumed by Mermaid via the CDN module) plus a
+  normal highlighted code fence as the fallback. mermaid.js (loaded only on
+  pages that contain a diagram) swaps the fallback for the rendered SVG on
+  success. With JS disabled — or if the CDN is unreachable — the highlighted
+  fence remains, so the content is never lost.
+*/ -}}
+{{- $source := trim .Inner "\n" -}}
+<div class="mermaid-block">
+  <pre class="mermaid-src" hidden aria-hidden="true">{{ $source }}</pre>
+  <div class="mermaid-fallback">
+    {{ highlight $source "text" "" }}
+  </div>
+</div>
+{{- .Page.Store.Set "hasMermaid" true -}}
