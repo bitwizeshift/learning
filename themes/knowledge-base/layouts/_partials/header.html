@@ -1,4 +1,7 @@
-{{- $dims := sort hugo.Data.dimensions.dimension "weight" }}
+{{- $dims := hugo.Data.dimensions.dimension }}
+{{- $special := index (where $dims "special" true) 0 }}
+{{- $typeData := $special.data }}
+{{- $focusDims := sort (where $dims "focus" true) "weight" }}
 <a class="brand" href="{{ "/" | relLangURL }}">
   {{ partial "icon.html" "home" }}<span>{{ site.Title }}</span>
 </a>
@@ -13,37 +16,30 @@
     <li class="nav__item">
       <a class="nav__link" href="{{ "/" | relLangURL }}">{{ partial "icon.html" "home" }}<span>Home</span></a>
     </li>
-    {{- range $dims }}
-      {{- if .inNav }}
-        {{- $dim := . }}
-        <li class="nav__item nav__item--dropdown">
-          <a class="nav__link" href="{{ printf "/%s/" $dim.taxonomy | relLangURL }}">
-            {{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span>{{ partial "icon.html" "chevron-down" }}
-          </a>
-          <ul class="dropdown">
-            {{- range $term, $meta := index hugo.Data $dim.data }}
-              {{- $tm := partial "term-meta.html" (dict "data" $dim.data "term" $term) }}
-              <li class="dropdown__item">
-                <a class="dropdown__link" href="{{ $tm.url }}" style="{{ printf "--accent:%s" $tm.color | safeCSS }}">
-                  {{ partial "icon.html" $tm.icon }}<span>{{ $tm.name }}</span>
-                  <span class="dropdown__more">{{ partial "icon.html" "chevron-down" }}</span>
-                </a>
-                <ul class="submenu">
-                  <li class="submenu__head">{{ $tm.name }} by toolchain</li>
-                  {{- range $tool, $tmeta := hugo.Data.toolchains }}
-                    {{- $toolm := partial "term-meta.html" (dict "data" "toolchains" "term" $tool) }}
-                    <li>
-                      <a href="{{ printf "/%s/%s/" $tool $term | relLangURL }}" style="{{ printf "--accent:%s" $toolm.color | safeCSS }}">
-                        {{ partial "icon.html" $toolm.icon }}<span>{{ $toolm.name }} {{ $tm.name }}</span>
-                      </a>
-                    </li>
-                  {{- end }}
-                </ul>
-              </li>
-            {{- end }}
-          </ul>
-        </li>
-      {{- end }}
+    {{- range $type, $tmeta := index hugo.Data $typeData }}
+      {{- $tm := partial "term-meta.html" (dict "data" $typeData "term" $type) }}
+      <li class="nav__item nav__item--dropdown">
+        <a class="nav__link" href="{{ printf "/%s/%s/" $typeData $type | relLangURL }}">
+          {{ partial "icon.html" $tm.icon }}<span>{{ $tm.plural }}</span>{{ partial "icon.html" "chevron-down" }}
+        </a>
+        <ul class="dropdown dropdown--grouped">
+          {{- range $fdim := $focusDims }}
+            <li class="dropdown__group">
+              <p class="dropdown__group-head">{{ partial "icon.html" $fdim.icon }}<span>{{ $fdim.title }}</span></p>
+              <ul class="dropdown__group-list">
+                {{- range $term, $meta := index hugo.Data $fdim.data }}
+                  {{- $fm := partial "term-meta.html" (dict "data" $fdim.data "term" $term) }}
+                  <li>
+                    <a class="dropdown__link" href="{{ printf "/%s/%s/" $type $term | relLangURL }}" style="{{ printf "--accent:%s" $fm.color | safeCSS }}">
+                      {{ partial "icon.html" $fm.icon }}<span>{{ $fm.name }}</span>
+                    </a>
+                  </li>
+                {{- end }}
+              </ul>
+            </li>
+          {{- end }}
+        </ul>
+      </li>
     {{- end }}
   </ul>
 </nav>

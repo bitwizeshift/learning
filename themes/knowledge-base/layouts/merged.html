@@ -1,0 +1,40 @@
+{{ define "main" }}
+{{ $type := .Params.type }}
+{{ $axis := .Params.focusAxis }}
+{{ $term := .Params.focusTerm }}
+
+{{/* Posts of this type whose [focus] block names this (axis, term). */}}
+{{ $typePages := slice }}
+{{ with index site.Taxonomies.types $type }}{{ $typePages = .Pages }}{{ end }}
+{{ $matched := slice }}
+{{ range $typePages }}
+  {{ $post := . }}
+  {{ with .Params.focus }}
+    {{ with index . $axis }}
+      {{ if in . $term }}{{ $matched = $matched | append $post }}{{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $ordered := partial "order-posts.html" $matched }}
+{{ $hide := slice (dict "data" "types" "term" $type) (dict "data" $axis "term" $term) }}
+{{ $tm := partial "term-meta.html" (dict "data" "types" "term" $type) }}
+{{ $fm := partial "term-meta.html" (dict "data" $axis "term" $term) }}
+
+<div class="container">
+  <header class="page-head term-head" style="{{ printf "--accent:%s;--accent-line:%s" $tm.color $tm.outline | safeCSS }}">
+    <span class="term-head__icon">{{ partial "icon.html" $tm.icon }}</span>
+    <div class="term-head__body">
+      <h1 class="page-head__title">{{ .Title }}</h1>
+      <p class="term-head__desc">{{ $tm.plural }} focused on {{ $fm.name }}.{{ with $fm.desc }} {{ . }}{{ end }}</p>
+      <p class="term-head__count">{{ len $ordered }} post{{ if ne (len $ordered) 1 }}s{{ end }}</p>
+    </div>
+  </header>
+  {{ if $ordered }}
+    <div class="post-rows">
+      {{ range $ordered }}{{ partial "post-list.html" (dict "page" . "hide" $hide) }}{{ end }}
+    </div>
+  {{ else }}
+    <p class="empty">No posts yet for this combination.</p>
+  {{ end }}
+</div>
+{{ end }}

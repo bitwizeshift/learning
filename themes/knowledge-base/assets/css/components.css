@@ -57,7 +57,7 @@
 .id-badge--lg { font-size: .8rem; padding: .2rem .5rem; }
 
 /* ---- post listing rows ---- */
-.post-rows { display: flex; flex-direction: column; gap: .25rem; }
+.post-rows { display: flex; flex-direction: column; gap: .85rem; }
 .post-row {
   padding: .85rem 1rem;
   border: 1px solid var(--border);

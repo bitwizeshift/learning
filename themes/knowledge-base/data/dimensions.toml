@@ -2,38 +2,36 @@
 # Add a [[dimension]] here (plus a matching data file + taxonomy) to introduce a
 # brand-new kind of archetype with NO template changes.
 #
-#   taxonomy  : the Hugo taxonomy key (must exist in [taxonomies])
-#   title     : display heading used in nav + home page
-#   data      : name of the site.Data file holding per-term metadata
-#   icon      : sprite symbol for the dimension itself (home group heading)
-#   inNav     : render as a top-level nav dropdown
-#   composite : generate composite intersection pages crossing the `cross` dimension
-#   cross     : this dimension is the one every composite page is crossed against
-#   weight    : ordering
+#   taxonomy : the Hugo taxonomy key (must exist in [taxonomies])
+#   title    : display heading used in nav + home page
+#   data     : name of the site.Data file holding per-term metadata
+#   icon     : sprite symbol for the dimension itself (home group heading)
+#   special  : THE crossed axis. Its terms each get a nav dropdown, and merged
+#              pages are generated as (special term) x (every focus term).
+#   focus    : a focus axis. Each of its terms is crossed with the special axis
+#              to form a merged page, and posts opt in via their `[focus]` block.
+#   weight   : ordering (also orders the focus groups within each nav dropdown)
 
 [[dimension]]
-  taxonomy  = "types"
-  title     = "Type"
-  data      = "types"
-  icon      = "type"
-  inNav     = true
-  composite = true
-  weight    = 10
+  taxonomy = "types"
+  title    = "Type"
+  data     = "types"
+  icon     = "type"
+  special  = true
+  weight   = 10
 
 [[dimension]]
-  taxonomy  = "kinds"
-  title     = "Kind"
-  data      = "kinds"
-  icon      = "kind"
-  inNav     = true
-  composite = true
-  weight    = 20
+  taxonomy = "kinds"
+  title    = "Kind"
+  data     = "kinds"
+  icon     = "kind"
+  focus    = true
+  weight   = 20
 
 [[dimension]]
-  taxonomy  = "toolchains"
-  title     = "Toolchain"
-  data      = "toolchains"
-  icon      = "toolchain"
-  inNav     = false
-  cross     = true
-  weight    = 30
+  taxonomy = "toolchains"
+  title    = "Toolchain"
+  data     = "toolchains"
+  icon     = "toolchain"
+  focus    = true
+  weight   = 30

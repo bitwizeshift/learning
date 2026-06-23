@@ -1,29 +1,36 @@
 {{/*
-  Generates composite intersection pages at build time:
-    every `cross` toolchain  ×  every term of each `composite` dimension.
-  e.g. (cpp × best-practice) -> /cpp/best-practice/  "C++ Best Practices"
-  Reads merged site.Data, so any site using this theme gets these pages for free.
+  Generates "merged" pages at build time: the special axis (type) crossed with
+  every term of every focus axis (kinds, toolchains).
+    (best-practice x testing) -> /best-practice/testing/  "Testing Best Practices"
+    (best-practice x cpp)     -> /best-practice/cpp/       "C++ Best Practices"
+  Which posts a merged page lists is decided by each post's [focus] block, not by
+  taxonomy membership (see layouts/merged.html). Reads merged hugo.Data, so any
+  site using this theme gets these pages for free.
+
+  NOTE: focus-term slugs must be unique across focus axes (the path is
+  /{type}/{term}), e.g. testing/architecture/design vs cpp/go/python.
 */}}
 {{ $ctx := . }}
-{{ $toolchains := hugo.Data.toolchains }}
-{{ range hugo.Data.dimensions.dimension }}
-  {{ if .composite }}
-    {{ $tax := .taxonomy }}
-    {{ $dataName := .data }}
-    {{ range $term, $meta := index hugo.Data $dataName }}
-      {{ $termName := or $meta.plural $meta.name (humanize $term) }}
-      {{ range $tool, $tmeta := $toolchains }}
-        {{ $toolName := or $tmeta.name (humanize $tool) }}
+{{ $dims := hugo.Data.dimensions.dimension }}
+{{ $focusDims := sort (where $dims "focus" true) "weight" }}
+{{ range where $dims "special" true }}
+  {{ $typeData := .data }}
+  {{ range $type, $tmeta := index hugo.Data $typeData }}
+    {{ $typeName := or $tmeta.plural $tmeta.name (humanize $type) }}
+    {{ range $fdim := $focusDims }}
+      {{ $axis := $fdim.data }}
+      {{ range $term, $meta := index hugo.Data $axis }}
+        {{ $termName := or $meta.name (humanize $term) }}
         {{ $ctx.AddPage (dict
           "kind"   "page"
-          "path"   (printf "/%s/%s" $tool $term)
-          "title"  (printf "%s %s" $toolName $termName)
-          "layout" "composite"
+          "path"   (printf "/%s/%s" $type $term)
+          "title"  (printf "%s %s" $termName $typeName)
+          "layout" "merged"
           "params" (dict
-            "toolchain"     $tool
-            "otherTaxonomy" $tax
-            "otherTerm"     $term
-            "composite"     true
+            "type"      $type
+            "focusAxis" $axis
+            "focusTerm" $term
+            "merged"    true
           )
         ) }}
       {{ end }}

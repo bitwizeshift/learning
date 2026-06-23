@@ -62,6 +62,7 @@
   font-size: clamp(1.8rem, 1.3rem + 2vw, 2.5rem);
 }
 .page-head__title .icon { color: var(--primary); width: 1.1em; height: 1.1em; }
+.page-head__desc { margin-top: .5rem; max-width: 65ch; color: var(--text-muted); font-size: 1.02rem; }
 
 .empty {
   padding: 2rem;
