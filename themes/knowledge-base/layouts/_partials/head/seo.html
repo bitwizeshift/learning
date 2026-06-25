@@ -1,0 +1,40 @@
+{{- /*
+  SEO metadata: canonical, keywords (from every taxonomy incl. tags),
+  Open Graph, and Twitter Card. The page <title> and description live in
+  head.html; this partial mirrors their logic for the social variants.
+*/ -}}
+{{- $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) }}
+{{- $desc := .Description | default site.Params.description }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- $kw := slice }}
+{{- with .Params.resources }}{{ $kw = $kw | append . }}{{ end }}
+{{- with .Params.toolchains }}{{ $kw = $kw | append . }}{{ end }}
+{{- with .Params.concepts }}{{ $kw = $kw | append . }}{{ end }}
+{{- with .Params.tags }}{{ $kw = $kw | append . }}{{ end }}
+{{- with $kw }}
+<meta name="keywords" content="{{ delimit . ", " }}">
+{{- end }}
+
+<meta property="og:title" content="{{ $title }}">
+{{- with $desc }}
+<meta property="og:description" content="{{ . }}">
+{{- end }}
+<meta property="og:type" content="{{ cond .IsPage "article" "website" }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+{{- with .Params.image | default site.Params.ogImage }}
+<meta property="og:image" content="{{ . | absURL }}">
+{{- end }}
+{{- if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ $title }}">
+{{- with $desc }}
+<meta name="twitter:description" content="{{ . }}">
+{{- end }}

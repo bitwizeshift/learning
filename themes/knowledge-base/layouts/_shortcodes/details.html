@@ -1,0 +1,12 @@
+{{- /*
+  A <details>/<summary> disclosure block. Inherits the theme's `.prose details`
+  styling. Inner content is rendered as Markdown.
+    {{< details summary="Show the full example" >}}
+    markdown **content** here
+    {{< /details >}}
+    {{< details "Open by default" open=true >}}...{{< /details >}}
+*/ -}}
+<details{{ if .Get "open" }} open{{ end }}>
+  <summary>{{ .Get "summary" | default (.Get 0) | default "Details" }}</summary>
+  {{ .Page.RenderString .Inner }}
+</details>

@@ -1,0 +1,9 @@
+{{- /*
+  Renders one of the theme's SVG icons inline (from the sprite).
+  Accepts positional or named arguments:
+    {{< icon go >}}
+    {{< icon name="go" class="icon-lg" >}}
+*/ -}}
+{{- $name := .Get "name" | default (.Get 0) -}}
+{{- $class := .Get "class" | default (.Get 1) -}}
+{{- partial "icon.html" (dict "name" $name "class" $class) -}}

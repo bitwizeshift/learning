@@ -3,4 +3,5 @@
 <meta name="color-scheme" content="light dark">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 {{ with .Description | default site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+{{ partial "head/seo.html" . }}
 {{ partialCached "head/css.html" . }}

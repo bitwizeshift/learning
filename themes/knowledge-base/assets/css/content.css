@@ -78,6 +78,9 @@
 }
 .prose details[open] summary::before { transform: rotate(45deg); }
 .prose summary:hover { color: var(--primary); }
+/* Restore vertical rhythm for body content nested inside <details> (it is not a
+   direct child of .prose, so the global `.prose > * + *` rule does not reach it). */
+.prose details > * + * { margin-top: 1.1rem; }
 
 /* ---- Mermaid diagrams (progressive enhancement) ---- */
 .mermaid-src { display: none; }

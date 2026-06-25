@@ -39,6 +39,20 @@
 .badge--type .icon { color: #fff; }
 .badge--type:hover { background: var(--accent-line); }
 
+/* ---- freeform tags (rendered as <tag/> labels, post page only) ---- */
+.post__tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
+.tag-html {
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .12rem .45rem;
+  white-space: nowrap;
+}
+
 /* ---- id badge (stable rule code) ---- */
 .id-badge {
   display: inline-flex;

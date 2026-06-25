@@ -11,6 +11,11 @@
         {{ range .Params.toolchains }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}
         {{ range .Params.concepts }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}
       </div>
+      {{ with .Params.tags }}
+        <div class="post__tags" aria-label="Tags">
+          {{ range . }}<span class="tag-html">&lt;{{ . }}/&gt;</span>{{ end }}
+        </div>
+      {{ end }}
       {{/* Reading time is shown only where it adds value (e.g. tutorials),
            or when a page opts in with `showReadingTime = true`. */}}
       {{ $resource := index (.Params.resources | default slice) 0 }}
