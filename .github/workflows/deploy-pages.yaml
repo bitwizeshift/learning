@@ -1,0 +1,80 @@
+name: Deploy Site to Github Pages
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  generate-static-site:
+    name: Generate Static Site
+    runs-on: ubuntu-latest
+    outputs:
+      base-url: ${{ steps.pages.outputs.base_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install Hugo CLI
+        env:
+          # Pinning the version here to ensure better reproducibility.
+          hugo_version: 0.163.3
+          deb_file: ${{ runner.temp }}/hugo.deb
+        run: |
+          wget                                                                 \
+            -O ${deb_file}                                                     \
+            https://github.com/gohugoio/hugo/releases/download/v${hugo_version}/hugo_extended_${hugo_version}_linux-amd64.deb \
+          && sudo dpkg -i "${deb_file}"
+
+      - name: Install Dart Sass
+        run: sudo snap install dart-sass
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Install Node.js dependencies
+        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+          base_url: ${{ steps.pages.outputs.base_url }}
+        run: |
+          hugo                                                                 \
+            --minify                                                           \
+            --baseURL "${base_url}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  # Deployment job
+  deploy:
+    name: Deploy to Github Pages
+    runs-on: ubuntu-latest
+    needs: generate-static-site
+    environment:
+      name: github-pages
+      url: ${{ needs.generate-static-site.outputs.base-url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
