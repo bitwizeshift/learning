@@ -1,33 +1,34 @@
 {{/*
-  Generates "merged" pages at build time: the special axis (type) crossed with
-  every term of every focus axis (kinds, toolchains).
+  Generates "merged" pages at build time: the special axis (resource) crossed with
+  every term of every focus axis (concepts, toolchains).
     (best-practice x testing) -> /best-practice/testing/  "Testing Best Practices"
     (best-practice x cpp)     -> /best-practice/cpp/       "C++ Best Practices"
-  Which posts a merged page lists is decided by each post's [focus] block, not by
-  taxonomy membership (see layouts/merged.html). Reads merged hugo.Data, so any
-  site using this theme gets these pages for free.
+  Which posts a merged page lists is decided by which focus-term folder a post
+  lives in (content/posts/<term>/), not by taxonomy membership (see
+  layouts/merged.html). Reads merged hugo.Data, so any site using this theme gets
+  these pages for free.
 
-  NOTE: focus-term slugs must be unique across focus axes (the path is
-  /{type}/{term}), e.g. testing/architecture/design vs cpp/go/python.
+  NOTE: focus-term slugs must be unique across focus axes (a post's folder names
+  exactly one term), e.g. testing/architecture/design vs cpp/go/python.
 */}}
 {{ $ctx := . }}
 {{ $dims := hugo.Data.dimensions.dimension }}
 {{ $focusDims := sort (where $dims "focus" true) "weight" }}
 {{ range where $dims "special" true }}
-  {{ $typeData := .data }}
-  {{ range $type, $tmeta := index hugo.Data $typeData }}
-    {{ $typeName := or $tmeta.plural $tmeta.name (humanize $type) }}
+  {{ $resourceData := .data }}
+  {{ range $resource, $tmeta := index hugo.Data $resourceData }}
+    {{ $resourceName := or $tmeta.plural $tmeta.name (humanize $resource) }}
     {{ range $fdim := $focusDims }}
       {{ $axis := $fdim.data }}
       {{ range $term, $meta := index hugo.Data $axis }}
         {{ $termName := or $meta.name (humanize $term) }}
         {{ $ctx.AddPage (dict
           "kind"   "page"
-          "path"   (printf "/%s/%s" $type $term)
-          "title"  (printf "%s %s" $termName $typeName)
+          "path"   (printf "/%s/%s" $resource $term)
+          "title"  (printf "%s %s" $termName $resourceName)
           "layout" "merged"
           "params" (dict
-            "type"      $type
+            "resource"  $resource
             "focusAxis" $axis
             "focusTerm" $term
             "merged"    true

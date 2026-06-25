@@ -1,5 +1,5 @@
-# Per-term metadata for the `kinds` taxonomy (formerly "category").
-# A post may belong to one or more kinds.
+# Per-term metadata for the `concepts` taxonomy.
+# A post may belong to one or more concepts.
 
 [testing]
   name    = "Testing"

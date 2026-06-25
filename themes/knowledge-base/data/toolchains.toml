@@ -25,3 +25,10 @@
   color   = "#3776AB"
   outline = "#2B5B84"
   desc    = "Pythonic techniques and tooling."
+
+[rust]
+  name    = "Rust"
+  icon    = "rust"
+  color   = "#CE422B"
+  outline = "#A33218"
+  desc    = "Safe, idiomatic systems programming."

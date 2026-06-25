@@ -1,23 +1,19 @@
 {{ define "main" }}
-{{ $type := .Params.type }}
+{{ $resource := .Params.resource }}
 {{ $axis := .Params.focusAxis }}
 {{ $term := .Params.focusTerm }}
 
-{{/* Posts of this type whose [focus] block names this (axis, term). */}}
-{{ $typePages := slice }}
-{{ with index site.Taxonomies.types $type }}{{ $typePages = .Pages }}{{ end }}
+{{/* Posts of this resource that live in the focus-term folder
+     (content/posts/<term>/) — the folder is the post's focus. */}}
+{{ $resourcePages := slice }}
+{{ with index site.Taxonomies.resources $resource }}{{ $resourcePages = .Pages }}{{ end }}
 {{ $matched := slice }}
-{{ range $typePages }}
-  {{ $post := . }}
-  {{ with .Params.focus }}
-    {{ with index . $axis }}
-      {{ if in . $term }}{{ $matched = $matched | append $post }}{{ end }}
-    {{ end }}
-  {{ end }}
+{{ range $resourcePages }}
+  {{ if and .File (eq (path.Base .File.Dir) $term) }}{{ $matched = $matched | append . }}{{ end }}
 {{ end }}
 {{ $ordered := partial "order-posts.html" $matched }}
-{{ $hide := slice (dict "data" "types" "term" $type) (dict "data" $axis "term" $term) }}
-{{ $tm := partial "term-meta.html" (dict "data" "types" "term" $type) }}
+{{ $hide := slice (dict "data" "resources" "term" $resource) (dict "data" $axis "term" $term) }}
+{{ $tm := partial "term-meta.html" (dict "data" "resources" "term" $resource) }}
 {{ $fm := partial "term-meta.html" (dict "data" $axis "term" $term) }}
 
 <div class="container">

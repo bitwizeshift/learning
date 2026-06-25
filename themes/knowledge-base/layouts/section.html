@@ -5,7 +5,7 @@
     {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
   </header>
   <div class="post-rows">
-    {{ range partial "order-posts.html" .Pages }}
+    {{ range partial "order-posts.html" .RegularPagesRecursive }}
       {{ partial "post-list.html" . }}
     {{ end }}
   </div>

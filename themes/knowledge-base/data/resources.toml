@@ -1,4 +1,4 @@
-# Per-term metadata for the `types` taxonomy. A post has exactly ONE type.
+# Per-term metadata for the `resources` taxonomy. A post has exactly ONE resource.
 
 [best-practice]
   name    = "Best Practice"
@@ -24,13 +24,13 @@
   outline = "#4a148c"
   desc    = "Step-by-step learning from the ground up."
 
-[reference]
-  name    = "Reference"
-  plural  = "Reference"
-  icon    = "reference"
-  color   = "#c62828"
-  outline = "#8e0000"
-  desc    = "Lookup-style, comprehensive detail."
+# [reference]
+#   name    = "Reference"
+#   plural  = "Reference"
+#   icon    = "reference"
+#   color   = "#c62828"
+#   outline = "#8e0000"
+#   desc    = "Lookup-style, comprehensive detail."
 
 [tip]
   name    = "Tip"

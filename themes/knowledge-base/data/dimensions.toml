@@ -9,22 +9,23 @@
 #   special  : THE crossed axis. Its terms each get a nav dropdown, and merged
 #              pages are generated as (special term) x (every focus term).
 #   focus    : a focus axis. Each of its terms is crossed with the special axis
-#              to form a merged page, and posts opt in via their `[focus]` block.
+#              to form a merged page, and a post opts in by living in the folder
+#              content/posts/<term>/ named for that focus term.
 #   weight   : ordering (also orders the focus groups within each nav dropdown)
 
 [[dimension]]
-  taxonomy = "types"
-  title    = "Type"
-  data     = "types"
-  icon     = "type"
+  taxonomy = "resources"
+  title    = "Resource"
+  data     = "resources"
+  icon     = "resource"
   special  = true
   weight   = 10
 
 [[dimension]]
-  taxonomy = "kinds"
-  title    = "Kind"
-  data     = "kinds"
-  icon     = "kind"
+  taxonomy = "concepts"
+  title    = "Concept"
+  data     = "concepts"
+  icon     = "concept"
   focus    = true
   weight   = 20
 

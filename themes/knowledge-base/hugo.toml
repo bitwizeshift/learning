@@ -2,9 +2,16 @@
 # [taxonomies] block (taxonomies must be declared by the site to take effect).
 
 [taxonomies]
-  kind      = 'kinds'
+  concept   = 'concepts'
+  resource  = 'resources'
   toolchain = 'toolchains'
-  type      = 'types'
+
+# Posts live in content/posts/<focus-term>/. Drop the leading "posts" section so
+# a post's URL is /<focus-term>/<name>/, where <name> is the front-matter `slug`
+# if set, otherwise the filename. Set `slug = '<id>'` to get /<focus-term>/<id>/.
+[permalinks]
+  [permalinks.page]
+    posts = '/:sections[1:]/:slugorcontentbasename/'
 
 [markup]
   [markup.highlight]

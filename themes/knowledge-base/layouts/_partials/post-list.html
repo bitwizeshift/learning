@@ -18,14 +18,14 @@
     {{- with $p.Params.id }}<a class="id-badge" href="{{ $p.RelPermalink }}#{{ . }}">{{ . }}</a>{{ end }}
     <a class="post-row__title" href="{{ $p.RelPermalink }}">{{ $p.LinkTitle }}</a>
     <span class="badges">
-      {{- with $p.Params.types }}{{ $t := index . 0 }}
-        {{- if not (in $hidden (printf "types|%s" $t)) }}{{ partial "badge.html" (dict "data" "types" "term" $t "emphasis" true) }}{{ end }}
+      {{- with $p.Params.resources }}{{ $t := index . 0 }}
+        {{- if not (in $hidden (printf "resources|%s" $t)) }}{{ partial "badge.html" (dict "data" "resources" "term" $t "emphasis" true) }}{{ end }}
       {{- end }}
       {{- range $p.Params.toolchains }}
         {{- if not (in $hidden (printf "toolchains|%s" .)) }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}
       {{- end }}
-      {{- range $p.Params.kinds }}
-        {{- if not (in $hidden (printf "kinds|%s" .)) }}{{ partial "badge.html" (dict "data" "kinds" "term" .) }}{{ end }}
+      {{- range $p.Params.concepts }}
+        {{- if not (in $hidden (printf "concepts|%s" .)) }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}
       {{- end }}
     </span>
   </div>

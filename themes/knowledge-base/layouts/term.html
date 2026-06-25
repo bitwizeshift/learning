@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{ $isCross := eq .Data.Plural "toolchains" }}
-{{ $groupData := cond $isCross "types" "toolchains" }}
+{{ $groupData := cond $isCross "resources" "toolchains" }}
 {{ $self := partial "term-meta.html" (dict "data" .Data.Plural "term" .Data.Term) }}
 <div class="container">
   <header class="page-head term-head" style="{{ printf "--accent:%s;--accent-line:%s" $self.color $self.outline | safeCSS }}">

@@ -7,14 +7,14 @@
         <span>{{ .Title }}</span>
       </h1>
       <div class="badges post__badges">
-        {{ with .Params.types }}{{ partial "badge.html" (dict "data" "types" "term" (index . 0) "emphasis" true) }}{{ end }}
+        {{ with .Params.resources }}{{ partial "badge.html" (dict "data" "resources" "term" (index . 0) "emphasis" true) }}{{ end }}
         {{ range .Params.toolchains }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}
-        {{ range .Params.kinds }}{{ partial "badge.html" (dict "data" "kinds" "term" .) }}{{ end }}
+        {{ range .Params.concepts }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}
       </div>
       {{/* Reading time is shown only where it adds value (e.g. tutorials),
            or when a page opts in with `showReadingTime = true`. */}}
-      {{ $type := index (.Params.types | default slice) 0 }}
-      {{ $showReadingTime := or (eq $type "tutorial") (eq .Params.showReadingTime true) }}
+      {{ $resource := index (.Params.resources | default slice) 0 }}
+      {{ $showReadingTime := or (eq $resource "tutorial") (eq .Params.showReadingTime true) }}
       {{ if $showReadingTime }}
         <div class="post__meta">
           <span>{{ .ReadingTime }} min read</span>
