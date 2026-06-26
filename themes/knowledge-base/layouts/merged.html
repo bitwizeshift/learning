@@ -3,13 +3,18 @@
 {{ $axis := .Params.focusAxis }}
 {{ $term := .Params.focusTerm }}
 
-{{/* Posts of this resource that live in the focus-term folder
-     (content/posts/<term>/) — the folder is the post's focus. */}}
+{{/* Posts of this resource whose `focus` frontmatter names this axis+term,
+     e.g. [focus] concepts = ['testing'] opts a post into /<resource>/testing/.
+     The focus map is keyed by the axis (taxonomy) name, so the same term under a
+     different axis stays unambiguous. */}}
 {{ $resourcePages := slice }}
 {{ with index site.Taxonomies.resources $resource }}{{ $resourcePages = .Pages }}{{ end }}
 {{ $matched := slice }}
 {{ range $resourcePages }}
-  {{ if and .File (eq (path.Base .File.Dir) $term) }}{{ $matched = $matched | append . }}{{ end }}
+  {{ $p := . }}
+  {{ with $p.Params.focus }}
+    {{ if in (index . $axis) $term }}{{ $matched = $matched | append $p }}{{ end }}
+  {{ end }}
 {{ end }}
 {{ $ordered := partial "order-posts.html" $matched }}
 {{ $hide := slice (dict "data" "resources" "term" $resource) (dict "data" $axis "term" $term) }}

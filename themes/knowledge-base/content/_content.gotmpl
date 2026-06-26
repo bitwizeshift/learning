@@ -9,14 +9,19 @@
      focus axis (concepts, toolchains):
        (best-practice x testing) -> /best-practice/testing/  "Testing Best Practices"
        (best-practice x cpp)     -> /best-practice/cpp/       "C++ Best Practices"
-     Which posts a merged page lists is decided by which focus-term folder a post
-     lives in (content/posts/<term>/), not taxonomy membership (see layouts/merged.html).
+     Which posts a merged page lists is decided by each post's `focus`
+     frontmatter — a map of focus-axis -> terms — not taxonomy membership or
+     folder location (see layouts/merged.html). A post can name several
+     axes/terms, e.g.
+       [focus]
+       concepts = ['testing']
+     opts it into every (resource x testing) page.
 
   Terms/pages that already have content merge into the same node — no duplication.
   Tags are intentionally excluded (not a dimension, no pages).
 
-  NOTE: focus-term slugs must be unique across focus axes (a post's folder names
-  exactly one term), e.g. testing/architecture/design vs cpp/go/python.
+  Because the focus map names the axis explicitly, the same term spelling under
+  two different axes stays unambiguous — no cross-axis slug-uniqueness needed.
 */}}
 {{ $ctx := . }}
 {{ $dims := hugo.Data.dimensions.dimension }}

@@ -9,8 +9,8 @@
 #   special  : THE crossed axis. Its terms each get a nav dropdown, and merged
 #              pages are generated as (special term) x (every focus term).
 #   focus    : a focus axis. Each of its terms is crossed with the special axis
-#              to form a merged page, and a post opts in by living in the folder
-#              content/posts/<term>/ named for that focus term.
+#              to form a merged page, and a post opts in via its `focus`
+#              frontmatter: [focus] <data> = ['<term>'] (e.g. concepts = ['testing']).
 #   weight   : ordering (also orders the focus groups within each nav dropdown)
 
 [[dimension]]
