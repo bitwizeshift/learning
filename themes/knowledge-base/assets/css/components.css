@@ -86,12 +86,19 @@
 .post-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
 .post-row__line .badges { gap: .35rem; }
 .post-row__summary { margin-top: .45rem; color: var(--text-muted); font-size: .9rem; line-height: 1.55; }
+/* Vertical rhythm: space every block (paragraphs, lists, code, callouts) so the
+   summary reads as distinct blocks instead of one dense, compressed wall. */
+.post-row__summary > * + * { margin-top: .65rem; }
 .post-row__summary > :first-child { margin-top: 0; }
-.post-row__summary p { margin: 0; }
-.post-row__summary p + p { margin-top: .5rem; }
+.post-row__summary ul, .post-row__summary ol { padding-left: 1.3rem; }
+.post-row__summary li + li { margin-top: .3rem; }
+.post-row__summary li > * + * { margin-top: .35rem; }
 .post-row__summary strong, .post-row__summary b { color: var(--text); font-weight: 700; }
 .post-row__summary a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
-.post-row__summary code {
+/* Inline code only. Without `:not(pre)` this border/background also lands on the
+   block <code> inside <pre>, drawing stray rounded-corner edges over snippets
+   (the "prefix/postfix edge" seen only on list pages). */
+.post-row__summary :not(pre) > code {
   font-family: var(--font-mono);
   font-size: .85em;
   padding: .1em .35em;
