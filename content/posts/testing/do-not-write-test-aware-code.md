@@ -65,7 +65,8 @@ The *mechanism* that tempts test-awareness differs by language -- a flag, a
 preprocessor guard, runner detection, or a build configuration. Each dropdown
 notes the relevant one.
 
-{{<details summary="C++ example">}}
+{{< tabs >}}
+{{< tab icon="cplusplus" label="C++" >}}
 
 The common test-aware mechanism in C++ is a preprocessor guard (`#ifdef
 UNIT_TEST`) or a runtime flag that strips real work from test builds. Both make
@@ -145,9 +146,9 @@ TEST_CASE("deposit increases the balance and persists it") {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Go example">}}
+{{< tab icon="go" label="Go" >}}
 
 Go encourages dependency injection through interfaces, and collaborators can be
 supplied as struct fields, constructor arguments, or functional options. The
@@ -246,9 +247,9 @@ func TestDeposit(t *testing.T) {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Python example">}}
+{{< tab icon="python" label="Python" >}}
 
 The Python temptation is to detect the runner at runtime --
 `"pytest" in sys.modules`, an environment variable, or an `is_test` flag. Prefer
@@ -315,9 +316,9 @@ def test_deposit_increases_balance_and_persists_it():
   assert store.saved == 100
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Rust example">}}
+{{< tab icon="rust" label="Rust" >}}
 
 `#[cfg(test)]` is the idiomatic way to compile *test-only modules*, but using
 `#[cfg(not(test))]` to branch production logic makes the test build behave
@@ -403,7 +404,8 @@ fn deposit_increases_balance_and_persists_it() {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Resources
 

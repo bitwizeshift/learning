@@ -50,7 +50,8 @@ several behaviors hides them behind one name and that list becomes incomplete.
 
 ## Examples
 
-{{<details summary="C++ example">}}
+{{< tabs >}}
+{{< tab icon="cplusplus" label="C++" >}}
 
 ### ❌ Bad Example
 
@@ -92,9 +93,9 @@ TEST_CASE("withdraw reduces the balance") {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Go example">}}
+{{< tab icon="go" label="Go" >}}
 
 ### ❌ Bad Example
 
@@ -148,9 +149,9 @@ func TestWithdrawReducesBalance(t *testing.T) {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Python example">}}
+{{< tab icon="python" label="Python" >}}
 
 ### ❌ Bad Example
 
@@ -189,9 +190,9 @@ def test_withdraw_reduces_balance():
   assert account.balance() == 60
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Rust example">}}
+{{< tab icon="rust" label="Rust" >}}
 
 ### ❌ Bad Example
 
@@ -236,7 +237,8 @@ fn withdraw_reduces_balance() {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Resources
 

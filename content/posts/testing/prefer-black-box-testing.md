@@ -66,7 +66,8 @@ implementation details, not part of its contract.
 The mechanics of "private" differ by language, so the black-box boundary is
 enforced differently in each. The examples below note the relevant semantics.
 
-{{<details summary="C++ example">}}
+{{< tabs >}}
+{{< tab icon="cplusplus" label="C++" >}}
 
 C++ enforces access at compile time: a test simply cannot call a `private` member
 from outside the class. The only way is to declare the test a `friend` which
@@ -125,9 +126,9 @@ TEST_CASE("make produces a url slug") {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Go example">}}
+{{< tab icon="go" label="Go" >}}
 
 Go enforces the boundary through packages. A test in the external `slug_test`
 package can only reach exported identifiers, which makes black-box testing the
@@ -205,9 +206,9 @@ func TestMake(t *testing.T) {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Python example">}}
+{{< tab icon="python" label="Python" >}}
 
 Python does not enforce privacy. A leading underscore (`_strip_punctuation`) is a
 convention signalling "internal", and a double underscore only triggers name
@@ -254,9 +255,9 @@ def test_slugify_produces_a_url_slug():
   assert result == "hello-world"
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Rust example">}}
+{{< tab icon="rust" label="Rust" >}}
 
 Rust deviates from the others: a child module can see its parent's private items,
 so an in-module `#[cfg(test)] mod tests` block *can* call private functions. That
@@ -312,7 +313,8 @@ fn slugify_produces_a_url_slug() {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Resources
 

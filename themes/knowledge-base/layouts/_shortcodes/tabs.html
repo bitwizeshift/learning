@@ -1,0 +1,10 @@
+{{- /*
+  A tabbed container. Wraps one or more {{< tab >}} children; only the selected
+  tab's content is shown. Pure CSS, no JavaScript. The number of tabs is dynamic.
+    {{< tabs >}}
+    {{< tab icon="go" label="Go" >}}markdown **content**{{< /tab >}}
+    {{< tab label="Notes" >}}...{{< /tab >}}
+    {{< /tabs >}}
+  Children are already rendered HTML, so emit .Inner verbatim (do not RenderString).
+*/ -}}
+<div class="tabs">{{ .Inner }}</div>

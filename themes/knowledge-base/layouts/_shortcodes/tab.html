@@ -1,0 +1,20 @@
+{{- /*
+  A single tab within {{< tabs >}}. Accepts `icon` (a named SVG icon) and/or
+  `label` (text; also positional 0). Either or both may be set.
+    {{< tab icon="python" label="Python" >}}...{{< /tab >}}
+    {{< tab "Plain text tab" >}}...{{< /tab >}}
+  Group identity and the 1-based index are derived from the parent instance so
+  IDs stay page-unique without depending on template execution order.
+*/ -}}
+{{- $name  := printf "tabset-%d" .Parent.Ordinal -}}
+{{- $idx   := add (.Parent.Store.Get "count" | default 0) 1 -}}
+{{- .Parent.Store.Set "count" $idx -}}
+{{- $id    := printf "tab-%d-%d" .Parent.Ordinal $idx -}}
+{{- $icon  := .Get "icon" -}}
+{{- $label := .Get "label" | default (.Get 0) -}}
+<input type="radio" name="{{ $name }}" id="{{ $id }}" class="tabs__radio"{{ if eq $idx 1 }} checked{{ end }}>
+<label for="{{ $id }}" class="tabs__label">
+  {{- with $icon }}{{ partial "icon.html" . }}{{ end -}}
+  {{- with $label }}<span class="tabs__text">{{ . }}</span>{{ end -}}
+</label>
+<div class="tabs__panel">{{ .Page.RenderString .Inner }}</div>

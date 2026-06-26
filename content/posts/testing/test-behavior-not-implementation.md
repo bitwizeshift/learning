@@ -61,7 +61,8 @@ The function under test returns a temporary file path. Its documented contract i
 that the path is under `/tmp/`; the exact filename is an implementation detail,
 not a guarantee.
 
-{{<details summary="C++ example">}}
+{{< tabs >}}
+{{< tab icon="cplusplus" label="C++" >}}
 
 ```cpp
 // Returns a path to a temporary file using the given seed as the filename.
@@ -110,9 +111,9 @@ TEST_CASE("file_name is unique per seed") {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Go example">}}
+{{< tab icon="go" label="Go" >}}
 
 ```go
 package tmp
@@ -179,9 +180,9 @@ func TestFileNameIsUniquePerSeed(t *testing.T) {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Python example">}}
+{{< tab icon="python" label="Python" >}}
 
 ```python
 def file_name(seed: int) -> str:
@@ -226,9 +227,9 @@ def test_file_name_is_unique_per_seed():
   assert name_a != name_b
 ```
 
-{{</details>}}
+{{< /tab >}}
 
-{{<details summary="Rust example">}}
+{{< tab icon="rust" label="Rust" >}}
 
 ```rust
 /// Returns a path to a temporary file using the given seed as the filename.
@@ -278,7 +279,8 @@ fn file_name_is_unique_per_seed() {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Resources
 

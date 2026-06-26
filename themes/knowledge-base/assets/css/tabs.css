@@ -1,0 +1,70 @@
+/* ============================================================
+   Tabbed content ({{< tabs >}} / {{< tab >}}) — pure CSS, no JS
+
+   Layout trick: every tab emits three siblings in source order —
+   radio, label, panel. Flexbox `order` floats all labels into a row
+   at the top and panels below, while the DOM keeps radio→label→panel
+   adjacent so `:checked + label + panel` selectors can work.
+   ============================================================ */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+/* Visually hidden but kept focusable for keyboard navigation. */
+.tabs__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabs__label {
+  order: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .7rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  user-select: none;
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
+}
+.tabs__label:hover { color: var(--primary); background: var(--surface-2); }
+.tabs__text { line-height: 1; }
+
+.tabs__panel {
+  order: 2;
+  flex-basis: 100%;
+  display: none;
+  padding: 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+/* Active tab + its panel. */
+.tabs__radio:checked + .tabs__label {
+  color: var(--heading);
+  border-bottom-color: var(--primary);
+}
+.tabs__radio:checked + .tabs__label + .tabs__panel { display: block; }
+
+/* Keyboard focus ring on the visible label, since the radio is hidden. */
+.tabs__radio:focus-visible + .tabs__label {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* Restore vertical rhythm for body content inside a panel (it is not a direct
+   child of .prose, so the global `.prose > * + *` rule does not reach it). */
+.tabs__panel > * + * { margin-top: 1.1rem; }
+.tabs__panel > :first-child { margin-top: 0; }
+.tabs__panel > :last-child { margin-bottom: 0; }

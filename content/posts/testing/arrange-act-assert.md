@@ -74,7 +74,8 @@ it.
 
 ## Examples
 
-{{<details summary="✅ C++ example">}}
+{{< tabs >}}
+{{< tab icon="cplusplus" label="C++" >}}
 
 ```cpp
 TEST_CASE("withdraw reduces the balance") {
@@ -89,9 +90,8 @@ TEST_CASE("withdraw reduces the balance") {
 }
 ```
 
-{{</details>}}
-
-{{<details summary="✅ Go example">}}
+{{< /tab >}}
+{{< tab icon="go" label="Go" >}}
 
 ```go
 func TestWithdraw(t *testing.T) {
@@ -110,9 +110,8 @@ func TestWithdraw(t *testing.T) {
 }
 ```
 
-{{</details>}}
-
-{{<details summary="✅ Python example">}}
+{{< /tab >}}
+{{< tab icon="python" label="Python" >}}
 
 ```python
 def test_withdraw_reduces_balance():
@@ -126,9 +125,8 @@ def test_withdraw_reduces_balance():
   assert account.balance() == 60
 ```
 
-{{</details>}}
-
-{{<details summary="✅ Rust example">}}
+{{< /tab >}}
+{{< tab icon="rust" label="Rust" >}}
 
 ```rust
 #[test]
@@ -144,7 +142,8 @@ fn withdraw_reduces_balance() {
 }
 ```
 
-{{</details>}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Resources
 
