@@ -1,18 +1,39 @@
 {{/*
-  Generates "merged" pages at build time: the special axis (resource) crossed with
-  every term of every focus axis (concepts, toolchains).
-    (best-practice x testing) -> /best-practice/testing/  "Testing Best Practices"
-    (best-practice x cpp)     -> /best-practice/cpp/       "C++ Best Practices"
-  Which posts a merged page lists is decided by which focus-term folder a post
-  lives in (content/posts/<term>/), not by taxonomy membership (see
-  layouts/merged.html). Reads merged hugo.Data, so any site using this theme gets
-  these pages for free.
+  Generates the browsable pages the nav/home link to, so advertised-but-empty
+  combinations resolve instead of 404ing. Driven by data/dimensions.toml, so any
+  site using this theme gets them for free. Reads merged hugo.Data.
+
+  1. A term page for every declared taxonomy term — covers terms that no post uses
+     yet (e.g. a new toolchain), which Hugo would otherwise not build.
+  2. "merged" pages: the special axis (resource) crossed with every term of every
+     focus axis (concepts, toolchains):
+       (best-practice x testing) -> /best-practice/testing/  "Testing Best Practices"
+       (best-practice x cpp)     -> /best-practice/cpp/       "C++ Best Practices"
+     Which posts a merged page lists is decided by which focus-term folder a post
+     lives in (content/posts/<term>/), not taxonomy membership (see layouts/merged.html).
+
+  Terms/pages that already have content merge into the same node — no duplication.
+  Tags are intentionally excluded (not a dimension, no pages).
 
   NOTE: focus-term slugs must be unique across focus axes (a post's folder names
   exactly one term), e.g. testing/architecture/design vs cpp/go/python.
 */}}
 {{ $ctx := . }}
 {{ $dims := hugo.Data.dimensions.dimension }}
+
+{{/* 1. A term page for every declared taxonomy term. */}}
+{{ range $dims }}
+  {{ $taxonomy := .taxonomy }}
+  {{ range $term, $meta := index hugo.Data .data }}
+    {{ $ctx.AddPage (dict
+      "kind"  "term"
+      "path"  (printf "/%s/%s" $taxonomy $term)
+      "title" (or $meta.name (humanize $term))
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{/* 2. Cross-section "merged" pages (resource x focus term). */}}
 {{ $focusDims := sort (where $dims "focus" true) "weight" }}
 {{ range where $dims "special" true }}
   {{ $resourceData := .data }}

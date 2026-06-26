@@ -1,0 +1,26 @@
+{{- /*
+  Favicon / bookmark icon hook.
+
+  The theme provides the mechanism; the site instance provides the files (in its
+  static/ dir) and the config under [params.icons] in hugo.toml. Every field is
+  optional — a site that sets none gets no markup, so this is inert by default.
+
+  Example (hugo.toml):
+    [params.icons]
+      svg        = '/favicon.svg'
+      ico        = '/favicon.ico'
+      png32      = '/favicon-32x32.png'
+      png16      = '/favicon-16x16.png'
+      appleTouch = '/apple-touch-icon.png'
+      manifest   = '/site.webmanifest'
+      themeColor = '#000000'
+*/ -}}
+{{- with site.Params.icons }}
+{{- with .svg }}<link rel="icon" type="image/svg+xml" href="{{ . | relURL }}">{{ end }}
+{{- with .ico }}<link rel="icon" href="{{ . | relURL }}" sizes="any">{{ end }}
+{{- with .png32 }}<link rel="icon" type="image/png" sizes="32x32" href="{{ . | relURL }}">{{ end }}
+{{- with .png16 }}<link rel="icon" type="image/png" sizes="16x16" href="{{ . | relURL }}">{{ end }}
+{{- with .appleTouch }}<link rel="apple-touch-icon" href="{{ . | relURL }}">{{ end }}
+{{- with .manifest }}<link rel="manifest" href="{{ . | relURL }}">{{ end }}
+{{- with .themeColor }}<meta name="theme-color" content="{{ . }}">{{ end }}
+{{- end }}
