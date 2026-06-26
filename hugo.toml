@@ -1,0 +1,43 @@
+baseURL = '/'
+locale = 'en-us'
+title = 'The Matt Pages'
+theme = 'knowledge-base'
+copyright = '© {year} Matthew Rodusek'
+enableEmoji = true
+
+[params]
+  # Icon shown next to the site title in the header. Any icon name from
+  # themes/knowledge-base/assets/icons/<name>.svg (defaults to "home").
+  brandIcon = 'pages'
+  tagline = 'A pragmatic engineering knowledge-sharing resource.'
+  description = 'An engineering knowledge-sharing resource spanning toolchains and developer concepts.'
+
+  # Favicon / bookmark icons. Files live in this site's static/ dir; the theme's
+  # head/icons.html partial renders the <link> tags from these values.
+  [params.icons]
+    svg        = '/favicon.svg'
+    ico        = '/favicon.ico'
+    png32      = '/favicon-32x32.png'
+    png16      = '/favicon-16x16.png'
+    appleTouch = '/apple-touch-icon.png'
+    manifest   = '/site.webmanifest'
+    themeColor = '#000000'
+
+# Taxonomies must be declared by the site to take effect.
+[taxonomies]
+  concept   = 'concepts'
+  resource  = 'resources'
+  toolchain = 'toolchains'
+  tag       = 'tags'
+
+[markup]
+  [markup.highlight]
+    noClasses   = false
+    codeFences  = true
+    guessSyntax = true
+    tabWidth    = 2
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel   = 3
