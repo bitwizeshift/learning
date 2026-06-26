@@ -1,4 +1,4 @@
-baseURL = '/'
+baseURL = '/learning'
 locale = 'en-us'
 title = 'The Matt Pages'
 theme = 'knowledge-base'
