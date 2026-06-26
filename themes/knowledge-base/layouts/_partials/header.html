@@ -2,7 +2,7 @@
 {{- $special := index (where $dims "special" true) 0 }}
 {{- $resourceData := $special.data }}
 {{- $focusDims := sort (where $dims "focus" true) "weight" }}
-<a class="brand" href="{{ "/" | relLangURL }}">
+<a class="brand" href="{{ site.Home.RelPermalink }}">
   {{ partial "icon.html" (site.Params.brandIcon | default "home") }}<span>{{ site.Title }}</span>
 </a>
 
@@ -16,7 +16,7 @@
     {{- range $resource, $tmeta := index hugo.Data $resourceData }}
       {{- $tm := partial "term-meta.html" (dict "data" $resourceData "term" $resource) }}
       <li class="nav__item nav__item--dropdown">
-        <a class="nav__link" href="{{ printf "/%s/%s/" $resourceData $resource | relLangURL }}">
+        <a class="nav__link" href="{{ printf "%s/%s/" $resourceData $resource | relLangURL }}">
           {{ partial "icon.html" $tm.icon }}<span>{{ $tm.plural }}</span>{{ partial "icon.html" "chevron-down" }}
         </a>
         <ul class="dropdown dropdown--grouped">
@@ -27,7 +27,7 @@
                 {{- range $term, $meta := index hugo.Data $fdim.data }}
                   {{- $fm := partial "term-meta.html" (dict "data" $fdim.data "term" $term) }}
                   <li>
-                    <a class="dropdown__link" href="{{ printf "/%s/%s/" $resource $term | relLangURL }}" style="{{ printf "--accent:%s" $fm.color | safeCSS }}">
+                    <a class="dropdown__link" href="{{ printf "%s/%s/" $resource $term | relLangURL }}" style="{{ printf "--accent:%s" $fm.color | safeCSS }}">
                       {{ partial "icon.html" $fm.icon }}<span>{{ $fm.name }}</span>
                     </a>
                   </li>

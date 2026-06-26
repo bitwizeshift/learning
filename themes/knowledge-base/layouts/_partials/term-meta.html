@@ -15,6 +15,6 @@
   "color"   (or $meta.color "#64748b")
   "outline" (or $meta.outline "#475569")
   "desc"    (or $meta.desc "")
-  "url"     (printf "/%s/%s/" $data $term | relLangURL)
+  "url"     (printf "%s/%s/" $data $term | relLangURL)
 }}
 {{- return $res }}

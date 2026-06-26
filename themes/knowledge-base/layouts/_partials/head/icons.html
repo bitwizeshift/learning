@@ -16,11 +16,11 @@
       themeColor = '#000000'
 */ -}}
 {{- with site.Params.icons }}
-{{- with .svg }}<link rel="icon" type="image/svg+xml" href="{{ . | relURL }}">{{ end }}
-{{- with .ico }}<link rel="icon" href="{{ . | relURL }}" sizes="any">{{ end }}
-{{- with .png32 }}<link rel="icon" type="image/png" sizes="32x32" href="{{ . | relURL }}">{{ end }}
-{{- with .png16 }}<link rel="icon" type="image/png" sizes="16x16" href="{{ . | relURL }}">{{ end }}
-{{- with .appleTouch }}<link rel="apple-touch-icon" href="{{ . | relURL }}">{{ end }}
-{{- with .manifest }}<link rel="manifest" href="{{ . | relURL }}">{{ end }}
+{{- with .svg }}<link rel="icon" type="image/svg+xml" href="{{ strings.TrimPrefix "/" . | relURL }}">{{ end }}
+{{- with .ico }}<link rel="icon" href="{{ strings.TrimPrefix "/" . | relURL }}" sizes="any">{{ end }}
+{{- with .png32 }}<link rel="icon" type="image/png" sizes="32x32" href="{{ strings.TrimPrefix "/" . | relURL }}">{{ end }}
+{{- with .png16 }}<link rel="icon" type="image/png" sizes="16x16" href="{{ strings.TrimPrefix "/" . | relURL }}">{{ end }}
+{{- with .appleTouch }}<link rel="apple-touch-icon" href="{{ strings.TrimPrefix "/" . | relURL }}">{{ end }}
+{{- with .manifest }}<link rel="manifest" href="{{ strings.TrimPrefix "/" . | relURL }}">{{ end }}
 {{- with .themeColor }}<meta name="theme-color" content="{{ . }}">{{ end }}
 {{- end }}
