@@ -1,0 +1,106 @@
+/* ============================================================
+   Glossary list page (layouts/glossary.html)
+   - A–Z index (<details>), word + preview rows (no badges), pagination
+   ============================================================ */
+
+/* ---- A–Z index ---- */
+.glossary-az {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: 0 1rem;
+}
+.glossary-az > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--heading);
+  padding: .85rem 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.glossary-az > summary::-webkit-details-marker { display: none; }
+.glossary-az > summary::before {
+  content: "";
+  width: .55em; height: .55em;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  transform: rotate(-45deg);
+  transition: transform .15s ease;
+}
+.glossary-az[open] > summary::before { transform: rotate(45deg); }
+.glossary-az[open] { padding-bottom: 1rem; }
+.glossary-az__body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.glossary-az__letter {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 .35rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .2rem;
+}
+.glossary-az__words { list-style: none; padding: 0; margin: 0; }
+.glossary-az__words li + li { margin-top: .25rem; }
+.glossary-az__words a { font-size: .9rem; }
+
+/* ---- Entry rows (word + preview, no badges) ---- */
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  margin-top: 1.75rem;
+}
+.glossary-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: .85rem 1rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.glossary-row:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
+.glossary-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
+.glossary-row__preview {
+  margin-top: .35rem;
+  color: var(--text-muted);
+  font-size: .9rem;
+  line-height: 1.55;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: 2rem;
+}
+.pagination__pages { display: flex; gap: .3rem; list-style: none; padding: 0; margin: 0; }
+.pagination__page,
+.pagination__edge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  padding: .35rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.pagination__page:hover,
+.pagination__edge:hover { border-color: var(--border-strong); background: var(--surface); text-decoration: none; }
+.pagination__page.is-current {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-contrast);
+}
+.pagination__edge.is-disabled,
+.pagination__page.is-disabled { opacity: .45; pointer-events: none; }

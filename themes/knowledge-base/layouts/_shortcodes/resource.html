@@ -1,0 +1,8 @@
+{{- /*
+  Inline, clickable resource badge for use in prose. Resources render emphasized
+  everywhere, so emphasis defaults to true here (override with emphasis=false).
+    {{< resource best-practice >}}   or   {{< resource term="guide" emphasis=false >}}
+*/ -}}
+{{- $term := .Get "term" | default (.Get 0) -}}
+{{- $emphasis := .Get "emphasis" | default true -}}
+{{- partial "badge.html" (dict "data" "resources" "term" $term "emphasis" $emphasis "link" true) -}}

@@ -1,0 +1,7 @@
+{{- /*
+  Inline, clickable concept badge for use in prose.
+    {{< concept testing >}}   or   {{< concept term="testing" >}}
+*/ -}}
+{{- $term := .Get "term" | default (.Get 0) -}}
+{{- $emphasis := .Get "emphasis" | default false -}}
+{{- partial "badge.html" (dict "data" "concepts" "term" $term "emphasis" $emphasis "link" true) -}}

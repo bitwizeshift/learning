@@ -4,12 +4,17 @@
     {{< tab icon="python" label="Python" >}}...{{< /tab >}}
     {{< tab "Plain text tab" >}}...{{< /tab >}}
   Group identity and the 1-based index are derived from the parent instance so
-  IDs stay page-unique without depending on template execution order.
+  IDs stay unique without depending on template execution order. The page's
+  UniqueID is folded in too, so summaries rendered together on a list page (each
+  with its own ordinal counter) never share a radio group `name`.
 */ -}}
-{{- $name  := printf "tabset-%d" .Parent.Ordinal -}}
+{{- $uid := "" -}}
+{{- with .Page.File }}{{ $uid = .UniqueID }}{{ end -}}
+{{- $gid   := printf "%s-%d" $uid .Parent.Ordinal -}}
 {{- $idx   := add (.Parent.Store.Get "count" | default 0) 1 -}}
 {{- .Parent.Store.Set "count" $idx -}}
-{{- $id    := printf "tab-%d-%d" .Parent.Ordinal $idx -}}
+{{- $name  := printf "tabset-%s" $gid -}}
+{{- $id    := printf "tab-%s-%d" $gid $idx -}}
 {{- $icon  := .Get "icon" -}}
 {{- $label := .Get "label" | default (.Get 0) -}}
 <input type="radio" name="{{ $name }}" id="{{ $id }}" class="tabs__radio"{{ if eq $idx 1 }} checked{{ end }}>

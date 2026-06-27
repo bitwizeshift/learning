@@ -39,3 +39,17 @@
   color   = "#c2820c"
   outline = "#8a5d00"
   desc    = "Short, high-leverage pointers."
+
+# The glossary is a special resource: its list page uses a dedicated layout
+# (alphabetical, paginated, A-Z index, no badges), and `nocross` excludes it from
+# the cross-section "merged" pages and from the resource nav dropdowns - instead
+# it appears as a plain link at the end of the navbar.
+[glossary]
+  name    = "Glossary"
+  plural  = "Glossary"
+  icon    = "glossary"
+  color   = "#5b6470"
+  outline = "#3a4350"
+  desc    = "Definitions of key terms and jargon."
+  layout  = "glossary"
+  nocross = true

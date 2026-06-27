@@ -80,11 +80,13 @@
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .post-row:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
-/* Title + badges share a line, wrapping the badge group to the next line only
-   when the row gets too tight. */
+/* The id badge + title share the top line. The badge group is right-justified
+   (the title's auto margin eats the free space) when it fits beside the title,
+   and wraps to the next line — left-aligned — when it doesn't. */
 .post-row__line { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; }
-.post-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
-.post-row__line .badges { gap: .35rem; }
+.post-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); margin-right: auto; }
+.post-row__badges { gap: .35rem; }
+.post-row__badges:empty { display: none; }
 .post-row__summary { margin-top: .45rem; color: var(--text-muted); font-size: .9rem; line-height: 1.55; }
 /* Vertical rhythm: space every block (paragraphs, lists, code, callouts) so the
    summary reads as distinct blocks instead of one dense, compressed wall. */

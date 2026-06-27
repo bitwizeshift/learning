@@ -26,15 +26,18 @@
 {{ $ctx := . }}
 {{ $dims := hugo.Data.dimensions.dimension }}
 
-{{/* 1. A term page for every declared taxonomy term. */}}
+{{/* 1. A term page for every declared taxonomy term. A term may opt into a
+       custom layout via its data entry (e.g. concepts/glossary -> layout). */}}
 {{ range $dims }}
   {{ $taxonomy := .taxonomy }}
   {{ range $term, $meta := index hugo.Data .data }}
-    {{ $ctx.AddPage (dict
+    {{ $page := dict
       "kind"  "term"
       "path"  (printf "/%s/%s" $taxonomy $term)
       "title" (or $meta.name (humanize $term))
-    ) }}
+    }}
+    {{ with $meta.layout }}{{ $page = merge $page (dict "layout" .) }}{{ end }}
+    {{ $ctx.AddPage $page }}
   {{ end }}
 {{ end }}
 
@@ -43,23 +46,26 @@
 {{ range where $dims "special" true }}
   {{ $resourceData := .data }}
   {{ range $resource, $tmeta := index hugo.Data $resourceData }}
-    {{ $resourceName := or $tmeta.plural $tmeta.name (humanize $resource) }}
-    {{ range $fdim := $focusDims }}
-      {{ $axis := $fdim.data }}
-      {{ range $term, $meta := index hugo.Data $axis }}
-        {{ $termName := or $meta.name (humanize $term) }}
-        {{ $ctx.AddPage (dict
-          "kind"   "page"
-          "path"   (printf "/%s/%s" $resource $term)
-          "title"  (printf "%s %s" $termName $resourceName)
-          "layout" "merged"
-          "params" (dict
-            "resource"  $resource
-            "focusAxis" $axis
-            "focusTerm" $term
-            "merged"    true
-          )
-        ) }}
+    {{/* Resources flagged `nocross` (e.g. the glossary) get no intersection pages. */}}
+    {{ if not $tmeta.nocross }}
+      {{ $resourceName := or $tmeta.plural $tmeta.name (humanize $resource) }}
+      {{ range $fdim := $focusDims }}
+        {{ $axis := $fdim.data }}
+        {{ range $term, $meta := index hugo.Data $axis }}
+          {{ $termName := or $meta.name (humanize $term) }}
+          {{ $ctx.AddPage (dict
+            "kind"   "page"
+            "path"   (printf "/%s/%s" $resource $term)
+            "title"  (printf "%s %s" $termName $resourceName)
+            "layout" "merged"
+            "params" (dict
+              "resource"  $resource
+              "focusAxis" $axis
+              "focusTerm" $term
+              "merged"    true
+            )
+          ) }}
+        {{ end }}
       {{ end }}
     {{ end }}
   {{ end }}

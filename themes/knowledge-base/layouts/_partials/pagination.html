@@ -1,0 +1,19 @@
+{{- /*
+  Theme-styled pager. Input: a Paginator (e.g. `{{ partial "pagination.html" $paginator }}`).
+  Renders nothing when there is only a single page.
+*/ -}}
+{{- $p := . }}
+{{- if gt $p.TotalPages 1 }}
+<nav class="pagination" aria-label="Pagination">
+  {{- if $p.HasPrev }}<a class="pagination__edge" href="{{ $p.Prev.URL }}" rel="prev">&larr; Prev</a>
+  {{- else }}<span class="pagination__edge is-disabled" aria-hidden="true">&larr; Prev</span>{{ end }}
+  <ul class="pagination__pages">
+    {{- range $p.Pagers }}
+      {{- if eq . $p }}<li><span class="pagination__page is-current" aria-current="page">{{ .PageNumber }}</span></li>
+      {{- else }}<li><a class="pagination__page" href="{{ .URL }}">{{ .PageNumber }}</a></li>{{ end }}
+    {{- end }}
+  </ul>
+  {{- if $p.HasNext }}<a class="pagination__edge" href="{{ $p.Next.URL }}" rel="next">Next &rarr;</a>
+  {{- else }}<span class="pagination__edge is-disabled" aria-hidden="true">Next &rarr;</span>{{ end }}
+</nav>
+{{- end }}

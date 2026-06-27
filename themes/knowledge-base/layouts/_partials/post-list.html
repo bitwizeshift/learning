@@ -14,19 +14,16 @@
 {{- $hidden := slice }}
 {{- range $hide }}{{ $hidden = $hidden | append (printf "%s|%s" .data .term) }}{{ end }}
 <article class="post-row">
+  {{- /* id badge + title share the line; the badge group is pushed to the right
+        (via the title's auto margin) when it fits, and wraps left below when it
+        doesn't. Tightly trimmed so an empty set stays :empty (hidden via CSS). */ -}}
   <div class="post-row__line">
     {{- with $p.Params.id }}<a class="id-badge" href="{{ $p.RelPermalink }}#{{ . }}">{{ . }}</a>{{ end }}
     <a class="post-row__title" href="{{ $p.RelPermalink }}">{{ $p.LinkTitle }}</a>
-    <span class="badges">
-      {{- with $p.Params.resources }}{{ $t := index . 0 }}
-        {{- if not (in $hidden (printf "resources|%s" $t)) }}{{ partial "badge.html" (dict "data" "resources" "term" $t "emphasis" true) }}{{ end }}
-      {{- end }}
-      {{- range $p.Params.toolchains }}
-        {{- if not (in $hidden (printf "toolchains|%s" .)) }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}
-      {{- end }}
-      {{- range $p.Params.concepts }}
-        {{- if not (in $hidden (printf "concepts|%s" .)) }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}
-      {{- end }}
+    <span class="badges post-row__badges">
+      {{- with $p.Params.resources }}{{ $t := index . 0 }}{{- if not (in $hidden (printf "resources|%s" $t)) }}{{ partial "badge.html" (dict "data" "resources" "term" $t "emphasis" true) }}{{ end }}{{- end -}}
+      {{- range $p.Params.toolchains }}{{- if not (in $hidden (printf "toolchains|%s" .)) }}{{ partial "badge.html" (dict "data" "toolchains" "term" .) }}{{ end }}{{- end -}}
+      {{- range $p.Params.concepts }}{{- if not (in $hidden (printf "concepts|%s" .)) }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}{{- end -}}
     </span>
   </div>
   {{- with $p.Summary }}<div class="post-row__summary">{{ . }}</div>{{ end }}

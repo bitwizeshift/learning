@@ -1,0 +1,7 @@
+{{- /*
+  Inline, clickable toolchain badge for use in prose.
+    {{< toolchain go >}}   or   {{< toolchain term="go" >}}
+*/ -}}
+{{- $term := .Get "term" | default (.Get 0) -}}
+{{- $emphasis := .Get "emphasis" | default false -}}
+{{- partial "badge.html" (dict "data" "toolchains" "term" $term "emphasis" $emphasis "link" true) -}}

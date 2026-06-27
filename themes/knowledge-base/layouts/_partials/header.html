@@ -14,6 +14,8 @@
 <nav class="nav" aria-label="Main navigation">
   <ul class="nav__list">
     {{- range $resource, $tmeta := index hugo.Data $resourceData }}
+      {{- /* `nocross` resources (e.g. the glossary) are not dropdowns; see below. */}}
+      {{- if not $tmeta.nocross }}
       {{- $tm := partial "term-meta.html" (dict "data" $resourceData "term" $resource) }}
       <li class="nav__item nav__item--dropdown">
         <a class="nav__link" href="{{ printf "%s/%s/" $resourceData $resource | relLangURL }}">
@@ -37,6 +39,18 @@
           {{- end }}
         </ul>
       </li>
+      {{- end }}
+    {{- end }}
+    {{- /* `nocross` resources (e.g. the glossary) appear last as plain links. */}}
+    {{- range $resource, $tmeta := index hugo.Data $resourceData }}
+      {{- if $tmeta.nocross }}
+        {{- $tm := partial "term-meta.html" (dict "data" $resourceData "term" $resource) }}
+        <li class="nav__item">
+          <a class="nav__link" href="{{ printf "%s/%s/" $resourceData $resource | relLangURL }}">
+            {{ partial "icon.html" $tm.icon }}<span>{{ $tm.name }}</span>
+          </a>
+        </li>
+      {{- end }}
     {{- end }}
   </ul>
 </nav>

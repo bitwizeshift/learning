@@ -1,0 +1,62 @@
+{{- /*
+  Special list page for the `concepts/glossary` term (selected via the term's
+  `layout` key in data/concepts.toml). Unlike a normal term page it is sorted
+  alphabetically, paginated, fronted by an A–Z index, and shows word + preview
+  only (no badges). Individual entries still render with the normal page.html.
+*/ -}}
+{{ define "main" }}
+{{ $self := partial "term-meta.html" (dict "data" .Data.Plural "term" .Data.Term) }}
+{{ $entries := sort .Pages "LinkTitle" }}
+<div class="container">
+  <header class="page-head term-head" style="{{ printf "--accent:%s;--accent-line:%s" $self.color $self.outline | safeCSS }}">
+    <span class="term-head__icon">{{ partial "icon.html" $self.icon }}</span>
+    <div class="term-head__body">
+      <h1 class="page-head__title">{{ $self.name }}</h1>
+      {{ with $self.desc }}<p class="term-head__desc">{{ . }}</p>{{ end }}
+      <p class="term-head__count">{{ len $entries }} term{{ if ne (len $entries) 1 }}s{{ end }}</p>
+    </div>
+  </header>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+
+  {{ if $entries }}
+    {{/* A–Z index of every entry, grouped by first letter (non-letters -> #). */}}
+    {{ $az := newScratch }}
+    {{ range $entries }}
+      {{ $c := substr (upper .LinkTitle) 0 1 }}
+      {{ $L := cond (gt (len (findRE "[A-Z]" $c)) 0) $c "#" }}
+      {{ $az.Add $L (slice .) }}
+    {{ end }}
+    {{ $alphabet := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+    {{ $alphabet = $alphabet | append "#" }}
+    <details class="glossary-az">
+      <summary>Browse A&ndash;Z</summary>
+      <div class="glossary-az__body">
+        {{ range $L := $alphabet }}
+          {{ with $az.Get $L }}
+            <section class="glossary-az__group">
+              <h2 class="glossary-az__letter">{{ $L }}</h2>
+              <ul class="glossary-az__words">
+                {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+              </ul>
+            </section>
+          {{ end }}
+        {{ end }}
+      </div>
+    </details>
+
+    {{ $paginator := .Paginate $entries 20 }}
+    <div class="glossary-list">
+      {{ range $paginator.Pages }}
+        <article class="glossary-row">
+          <a class="glossary-row__title" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          {{ with .Description }}<p class="glossary-row__preview">{{ . }}</p>
+          {{ else }}{{ with .Summary }}<div class="glossary-row__preview">{{ . }}</div>{{ end }}{{ end }}
+        </article>
+      {{ end }}
+    </div>
+    {{ partial "pagination.html" $paginator }}
+  {{ else }}
+    <p class="empty">No glossary entries yet.</p>
+  {{ end }}
+</div>
+{{ end }}
