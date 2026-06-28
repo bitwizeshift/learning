@@ -39,6 +39,32 @@
 .badge--type .icon { color: #fff; }
 .badge--type:hover { background: var(--accent-line); }
 
+/* ---- generic inline link (icon + dotted underline, no border) ---- */
+.ilink {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: .2em;
+  transition: color .15s ease, text-decoration-color .15s ease, text-decoration-thickness .15s ease;
+}
+.ilink:hover {
+  color: var(--link-hover);
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+}
+.ilink:visited { color: var(--link-visited); }
+.ilink:visited:hover { color: var(--link-hover); }
+.ilink .icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: .3em;
+  vertical-align: -0.15em;
+  color: currentColor;
+}
+
 /* ---- freeform tags (rendered as <tag/> labels, post page only) ---- */
 .post__tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
 .tag-html {

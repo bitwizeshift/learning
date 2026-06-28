@@ -1,0 +1,20 @@
+{{- /*
+  Generic inline link with an optional icon. All arguments are optional.
+    {{< link url="https://example.com" text="Example" icon="link" hover="Visit the site" >}}
+    {{< link "https://example.com" "Example" >}}
+  Args:
+    url   - href for the link (omit to render plain, non-clickable text)
+    text  - visible label
+    icon  - name of a theme SVG icon to show beside the text
+    hover - title shown on hover
+*/ -}}
+{{- $url := .Get "url" | default (.Get 0) -}}
+{{- $text := .Get "text" | default (.Get 1) -}}
+{{- $icon := .Get "icon" -}}
+{{- $hover := .Get "hover" -}}
+{{- $inner := printf "%s%s" (cond (ne $icon nil) (string (partial "icon.html" $icon)) "") (cond (ne $text nil) (printf "<span>%s</span>" $text) "") -}}
+{{- if $url -}}
+<a class="ilink" href="{{ $url }}"{{ with $hover }} title="{{ . }}"{{ end }}>{{ $inner | safeHTML }}</a>
+{{- else -}}
+<span class="ilink"{{ with $hover }} title="{{ . }}"{{ end }}>{{ $inner | safeHTML }}</span>
+{{- end -}}

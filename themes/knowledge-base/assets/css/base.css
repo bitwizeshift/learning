@@ -21,6 +21,8 @@
   --heading:     #0f172a;
   --text-muted:  #64748b;
   --link:        var(--primary);
+  --link-hover:   #7c3aed;   /* violet 600 */
+  --link-visited: #8b7fb8;   /* muted lavender */
 
   /* Code */
   --code-bg:     #f6f8fa;
@@ -68,6 +70,8 @@
     --heading:     #f1f5f9;
     --text-muted:  #93a1b1;
     --link:        var(--primary);
+    --link-hover:   #c4b5fd;   /* violet 300 */
+    --link-visited: #a99fc9;   /* soft lavender */
 
     --code-bg:     #0d1117;
     --code-inline-bg: #1c2430;
