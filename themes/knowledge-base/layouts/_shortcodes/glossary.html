@@ -1,0 +1,21 @@
+{{- /*
+  Inline link to a glossary entry — a streamlined wrapper around the link style.
+  Give it a glossary term's slug and it resolves the URL, the visible label, the
+  glossary icon, and a sensible hover automatically.
+    {{< glossary test-double >}}
+    {{< glossary term="mock" text="mock object" >}}
+  Args:
+    term  - glossary entry slug (filename under content/posts/glossary); positional 0
+    text  - visible label (defaults to the entry's title)
+    hover - title shown on hover (defaults to "Read more in the glossary")
+*/ -}}
+{{- $term := .Get "term" | default (.Get 0) -}}
+{{- $page := .Page.GetPage (printf "/posts/glossary/%s" $term) -}}
+{{- if not $page -}}
+  {{- errorf "glossary shortcode: no glossary entry found for %q (used in %s)" $term .Page.File.Path -}}
+{{- else -}}
+{{- $text := .Get "text" | default (.Get 1) | default $page.LinkTitle -}}
+{{- $hover := .Get "hover" | default "Read more in the glossary" -}}
+{{- $inner := printf "%s<span>%s</span>" (string (partial "icon.html" "glossary")) $text -}}
+<a class="ilink" href="{{ $page.RelPermalink }}" title="{{ $hover }}">{{ $inner | safeHTML }}</a>
+{{- end -}}
