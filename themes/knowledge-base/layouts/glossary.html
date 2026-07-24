@@ -50,7 +50,10 @@
         <article class="glossary-row">
           <a class="glossary-row__title" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
           {{ with .Description }}<p class="glossary-row__preview list-prose">{{ . }}</p>
-          {{ else }}{{ with .Summary }}<div class="glossary-row__preview list-prose">{{ . }}</div>{{ end }}{{ end }}
+          {{ else }}{{ with .Summary }}<div class="glossary-row__preview list-prose">{{ . }}</div>
+            {{- /* Flag the page being built so baseof loads mermaid.html when a preview
+                  carries a diagram (the render hook only flags the owning post). */ -}}
+            {{- if strings.Contains (printf "%s" .) "mermaid-src" }}{{ page.Store.Set "hasMermaid" true }}{{ end }}{{ end }}{{ end }}
         </article>
       {{ end }}
     </div>

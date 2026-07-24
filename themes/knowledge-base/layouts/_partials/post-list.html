@@ -26,5 +26,12 @@
       {{- range $p.Params.concepts }}{{- if not (in $hidden (printf "concepts|%s" .)) }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}{{- end -}}
     </span>
   </div>
-  {{- with $p.Summary }}<div class="post-row__summary list-prose">{{ . }}</div>{{ end }}
+  {{- with $p.Summary }}
+    <div class="post-row__summary list-prose">{{ . }}</div>
+    {{- /* The ```mermaid render hook flags only the post that OWNS the content, so a
+          list/cross-list page showing another post's summary is never flagged and
+          baseof skips mermaid.html. If the rendered summary carries a diagram, flag
+          the page being built (the global `page`) so its Mermaid script loads. */ -}}
+    {{- if strings.Contains (printf "%s" .) "mermaid-src" }}{{ page.Store.Set "hasMermaid" true }}{{ end }}
+  {{- end }}
 </article>
