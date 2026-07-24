@@ -14,20 +14,16 @@ concepts = ['testing']
 +++
 
 When writing unit-tests, always follow the three-A's: **Arrange, Act, Assert**.
-This divides every test into three distinct phases:
+Every test divides into three distinct phases, where each phase has a
+well-defined role:
 
-* **Arrange**: set up the test-case, including any inputs, mocks, and expected
-  outputs.
+* **Arrange**: set up the test-case, including any inputs,
+  {{< glossary term="test-double" text="test doubles" >}}, and expectations.
 
 * **Act**: perform the one action under test.
 
 * **Assert**: check the outcome of the action, including any return values and
   expected side effects.
-
-{{< tip >}}
-Keep exactly **one** action in the Act phase. If you need two, that's usually two
-tests.
-{{< /tip >}}
 
 <!--more-->
 
@@ -58,8 +54,8 @@ position in every test.
 * **Detecting test smells**: the structure makes problems visible. A large
   Arrange phase signals that the unit has too many dependencies or does too
   much. More than one action in the Act phase signals that the test is covering
-  more than one behavior and should be split. Both are common sources of brittle
-  tests.
+  more than one behavior and should be split. Both are common symptoms of either
+  brittle tests or poorly designed units.
 
 ## Justification
 
@@ -73,6 +69,11 @@ test means the cost of reading any one test is the same regardless of who wrote
 it.
 
 ## Examples
+
+{{< tip >}}
+Keep exactly **one** action in the Act phase. If you need two, that's usually two
+tests.
+{{< /tip >}}
 
 {{< tabs >}}
 {{< tab icon="cplusplus" label="C++" >}}
@@ -147,17 +148,22 @@ fn withdraw_reduces_balance() {
 
 ## Resources
 
-* **[X-Unit Test Patterns][x-unit] by Gerard Meszaros** - a classic book on unit testing
-  that covers the AAA pattern.
+* **{{< link
+    url="https://martinfowler.com/books/meszaros.html"
+    text="X-Unit Test Patterns"
+    icon="link"
+    hover="Gerard Meszaros" >}} by Gerard Meszaros** - a classic book on unit testing that covers
+  the AAA pattern.
 
-* **[Clean Code: A Handbook of Agile Software Craftsmanship][clean-code] by
-  Robert C. Martin** -
-  a book that covers many best practices for writing clean, maintainable code,
-  including testing.
+* **{{< link
+    url="https://www.amazon.com/dp/0132350882"
+    text="Clean Code: A Handbook of Agile Software Craftsmanship"
+    icon="link"
+    hover="Robert C. Martin" >}} by Robert C. Martin** - a book that covers
+  many best practices for writing clean, maintainable code, including testing
 
-* **[Automation Panda: Arrange-Act-Assert][automation-panda]** - a separate
-  resource that addresses the AAA pattern in detail.
-
-[x-unit]: <https://martinfowler.com/books/meszaros.html>
-[clean-code]: <https://www.amazon.com/dp/0132350882>
-[automation-panda]: <https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/>
+* **{{< link
+    url="https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/>"
+    text="Automation Panda: Arrange-Act-Assert"
+    icon="link" >}}** - a separate resource that addresses the AAA pattern in
+  detail.
