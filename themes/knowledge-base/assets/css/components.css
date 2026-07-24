@@ -113,22 +113,27 @@
 .post-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); margin-right: auto; }
 .post-row__badges { gap: .35rem; }
 .post-row__badges:empty { display: none; }
-.post-row__summary { margin-top: .7rem; color: var(--text-muted); font-size: .95rem; line-height: 1.7; }
-/* Vertical rhythm: space every block (paragraphs, lists, code, callouts) so the
-   summary reads as distinct blocks instead of one dense, compressed wall. Kept in
-   step with `.prose` (content.css) so a post reads the same on a list page as it
-   does on its own page, just one notch tighter. */
-.post-row__summary > * + * { margin-top: 1rem; }
-.post-row__summary > :first-child { margin-top: 0; }
-.post-row__summary ul, .post-row__summary ol { padding-left: 1.4rem; }
-.post-row__summary li { margin: .3rem 0; }
-.post-row__summary li > * + * { margin-top: .5rem; }
-.post-row__summary strong, .post-row__summary b { color: var(--text); font-weight: 700; }
-.post-row__summary a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.post-row__summary { margin-top: .7rem; }
+
+/* ---- Shared list-row preview (`.list-prose`) ----
+   A post's rendered Summary shown inside a listing row: concept/toolchain/tag
+   term pages (`.post-row__summary`, post-list.html) and the glossary index
+   (`.glossary-row__preview`, glossary.html) both apply this. Kept in step with
+   `.prose` (content.css / code.css) so a preview renders the same markup — inline
+   code, code blocks, lists, callouts — as the post's own page, just one notch
+   tighter. Each row keeps its own top margin; everything else is shared here so
+   both list styles stay identical. */
+.list-prose { color: var(--text-muted); font-size: .95rem; line-height: 1.7; }
+.list-prose > * + * { margin-top: 1rem; }
+.list-prose > :first-child { margin-top: 0; }
+.list-prose ul, .list-prose ol { padding-left: 1.4rem; }
+.list-prose li { margin: .3rem 0; }
+.list-prose li > * + * { margin-top: .5rem; }
+.list-prose strong, .list-prose b { color: var(--text); font-weight: 700; }
+.list-prose a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
 /* Inline code only. Without `:not(pre)` this border/background also lands on the
-   block <code> inside <pre>, drawing stray rounded-corner edges over snippets
-   (the "prefix/postfix edge" seen only on list pages). */
-.post-row__summary :not(pre) > code {
+   block <code> inside <pre>, drawing stray rounded-corner edges over snippets. */
+.list-prose :not(pre) > code {
   font-family: var(--font-mono);
   font-size: .85em;
   padding: .1em .35em;
@@ -136,13 +141,13 @@
   border: 1px solid var(--code-border);
   border-radius: 5px;
 }
-.post-row__summary .highlight {
+.list-prose .highlight {
   margin: .75rem 0 0;
   border: 1px solid var(--code-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
-.post-row__summary pre.chroma {
+.list-prose pre.chroma {
   margin: 0;
   padding: .85rem 1rem;
   overflow-x: auto;

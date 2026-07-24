@@ -65,12 +65,10 @@
 }
 .glossary-row:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
 .glossary-row__title { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
-.glossary-row__preview {
-  margin-top: .35rem;
-  color: var(--text-muted);
-  font-size: .9rem;
-  line-height: 1.55;
-}
+/* Only the top margin is glossary-specific; typography and code styling are
+   shared with the concept/tag list rows via `.list-prose` (components.css) so
+   both list styles render a preview identically. */
+.glossary-row__preview { margin-top: .35rem; }
 
 /* ---- Pagination ---- */
 .pagination {

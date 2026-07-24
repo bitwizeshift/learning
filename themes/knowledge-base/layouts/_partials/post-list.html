@@ -26,5 +26,5 @@
       {{- range $p.Params.concepts }}{{- if not (in $hidden (printf "concepts|%s" .)) }}{{ partial "badge.html" (dict "data" "concepts" "term" .) }}{{ end }}{{- end -}}
     </span>
   </div>
-  {{- with $p.Summary }}<div class="post-row__summary">{{ . }}</div>{{ end }}
+  {{- with $p.Summary }}<div class="post-row__summary list-prose">{{ . }}</div>{{ end }}
 </article>

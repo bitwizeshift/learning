@@ -49,8 +49,8 @@
       {{ range $paginator.Pages }}
         <article class="glossary-row">
           <a class="glossary-row__title" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-          {{ with .Description }}<p class="glossary-row__preview">{{ . }}</p>
-          {{ else }}{{ with .Summary }}<div class="glossary-row__preview">{{ . }}</div>{{ end }}{{ end }}
+          {{ with .Description }}<p class="glossary-row__preview list-prose">{{ . }}</p>
+          {{ else }}{{ with .Summary }}<div class="glossary-row__preview list-prose">{{ . }}</div>{{ end }}{{ end }}
         </article>
       {{ end }}
     </div>
