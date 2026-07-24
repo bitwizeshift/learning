@@ -45,7 +45,11 @@
 .prose a:visited { color: var(--link-visited); }
 .prose a:visited:hover { color: var(--link-hover); }
 .prose ul, .prose ol { padding-left: 1.4rem; }
-.prose li { margin: .3rem 0; }
+.prose li { margin: .5rem 0; }
+/* List items nest their block content (e.g. paragraphs) inside the `<li>`, so
+   they are not direct children of `.prose` and the global `.prose > * + *` rule
+   does not reach them. Restore the spacing between stacked blocks in a list. */
+.prose li > * + * { margin-top: 1.1rem; }
 .prose img { border-radius: var(--radius); margin-inline: auto; }
 .prose hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
