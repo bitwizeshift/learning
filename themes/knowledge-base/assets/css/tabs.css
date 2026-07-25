@@ -44,6 +44,8 @@
 .tabs__panel {
   order: 2;
   flex-basis: 100%;
+  min-width: 0;
+  overflow-x: auto;
   display: none;
   padding: 1rem;
   background: var(--bg);
