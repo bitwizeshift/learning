@@ -44,7 +44,7 @@
       </div>
     </details>
 
-    {{ $paginator := .Paginate $entries 20 }}
+    {{ $paginator := .Paginate $entries }}
     <div class="glossary-list">
       {{ range $paginator.Pages }}
         <article class="glossary-row">

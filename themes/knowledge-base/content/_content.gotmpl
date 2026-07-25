@@ -54,7 +54,7 @@
         {{ range $term, $meta := index hugo.Data $axis }}
           {{ $termName := or $meta.name (humanize $term) }}
           {{ $ctx.AddPage (dict
-            "kind"   "page"
+            "kind"   "section"
             "path"   (printf "/%s/%s" $resource $term)
             "title"  (printf "%s %s" $termName $resourceName)
             "layout" "merged"

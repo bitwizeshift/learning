@@ -12,8 +12,10 @@
       <h2 class="dim-group__title">{{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span></h2>
       <div class="tiles">
         {{ range $term, $meta := index hugo.Data $dim.data }}
-          {{ $count := len (index site.Taxonomies $dim.taxonomy $term) }}
-          {{ partial "tile.html" (dict "data" $dim.data "term" $term "count" $count) }}
+          {{ if not $meta.nocross }}
+            {{ $count := len (index site.Taxonomies $dim.taxonomy $term) }}
+            {{ partial "tile.html" (dict "data" $dim.data "term" $term "count" $count) }}
+          {{ end }}
         {{ end }}
       </div>
     </section>

@@ -31,9 +31,11 @@
     </div>
   </header>
   {{ if $ordered }}
+    {{ $paginator := .Paginate $ordered }}
     <div class="post-rows">
-      {{ range $ordered }}{{ partial "post-list.html" (dict "page" . "hide" $hide) }}{{ end }}
+      {{ range $paginator.Pages }}{{ partial "post-list.html" (dict "page" . "hide" $hide) }}{{ end }}
     </div>
+    {{ partial "pagination.html" $paginator }}
   {{ else }}
     <p class="empty">No posts yet for this combination.</p>
   {{ end }}

@@ -1,17 +1,79 @@
 {{ define "main" }}
-{{ $isCross := eq .Data.Plural "toolchains" }}
-{{ $groupData := cond $isCross "resources" "toolchains" }}
-{{ $self := partial "term-meta.html" (dict "data" .Data.Plural "term" .Data.Term) }}
+{{ $data := .Data.Plural }}
+{{ $term := .Data.Term }}
+{{ $self := partial "term-meta.html" (dict "data" $data "term" $term) }}
+{{ $dims := hugo.Data.dimensions.dimension }}
+{{ $isResource := eq $data "resources" }}
 <div class="container">
   <header class="page-head term-head" style="{{ printf "--accent:%s;--accent-line:%s" $self.color $self.outline | safeCSS }}">
     <span class="term-head__icon">{{ partial "icon.html" $self.icon }}</span>
     <div class="term-head__body">
       <h1 class="page-head__title">{{ $self.name }}</h1>
       {{ with $self.desc }}<p class="term-head__desc">{{ . }}</p>{{ end }}
-      <p class="term-head__count">{{ len .Pages }} post{{ if ne (len .Pages) 1 }}s{{ end }}, grouped by {{ strings.TrimSuffix "s" $groupData }}</p>
+      <p class="term-head__count">{{ len .Pages }} post{{ if ne (len .Pages) 1 }}s{{ end }}</p>
     </div>
   </header>
   {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
-  {{ partial "grouped-list.html" (dict "pages" .Pages "groupData" $groupData "hide" (slice (dict "data" .Data.Plural "term" .Data.Term))) }}
+
+  {{ if $isResource }}
+    {{ range sort (where $dims "focus" true) "weight" }}
+      {{ $fdim := . }}
+      {{ $axis := $fdim.data }}
+      {{ $tiles := slice }}
+      {{ range $fterm, $meta := index hugo.Data $axis }}
+        {{ $matched := slice }}
+        {{ range $.Pages }}
+          {{ with .Params.focus }}{{ if in (index . $axis) $fterm }}{{ $matched = $matched | append . }}{{ end }}{{ end }}
+        {{ end }}
+        {{ with len $matched }}
+          {{ $tiles = $tiles | append (dict "data" $axis "term" $fterm "count" . "href" (printf "/%s/%s/" $term $fterm | relLangURL)) }}
+        {{ end }}
+      {{ end }}
+      {{ with $tiles }}
+        <section class="dim-group">
+          <h2 class="dim-group__title">{{ partial "icon.html" $fdim.icon }}<span>{{ $fdim.title }}</span></h2>
+          <div class="tiles">
+            {{ range . }}{{ partial "tile.html" . }}{{ end }}
+          </div>
+        </section>
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ $axis := $data }}
+    {{ $special := index (where $dims "special" true) 0 }}
+    {{ $tiles := slice }}
+    {{ range $resource, $rmeta := index hugo.Data $special.data }}
+      {{ if not $rmeta.nocross }}
+        {{ $matched := slice }}
+        {{ with index site.Taxonomies.resources $resource }}
+          {{ range .Pages }}
+            {{ with .Params.focus }}{{ if in (index . $axis) $term }}{{ $matched = $matched | append . }}{{ end }}{{ end }}
+          {{ end }}
+        {{ end }}
+        {{ with len $matched }}
+          {{ $tiles = $tiles | append (dict "data" $special.data "term" $resource "count" . "href" (printf "/%s/%s/" $resource $term | relLangURL)) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ with $tiles }}
+      <section class="dim-group">
+        <h2 class="dim-group__title">{{ partial "icon.html" $special.icon }}<span>{{ $special.title }}</span></h2>
+        <div class="tiles">
+          {{ range . }}{{ partial "tile.html" . }}{{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ end }}
+
+  {{ $ordered := partial "order-posts.html" .Pages }}
+  {{ $paginator := .Paginate $ordered }}
+  {{ $hide := slice (dict "data" $data "term" $term) }}
+  <section class="dim-group">
+    <h2 class="dim-group__title">{{ partial "icon.html" "pages" }}<span>All Posts</span></h2>
+    <div class="post-rows">
+      {{ range $paginator.Pages }}{{ partial "post-list.html" (dict "page" . "hide" $hide) }}{{ end }}
+    </div>
+    {{ partial "pagination.html" $paginator }}
+  </section>
 </div>
 {{ end }}

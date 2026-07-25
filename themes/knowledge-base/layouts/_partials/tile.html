@@ -4,7 +4,8 @@
 */ -}}
 {{- $m := partial "term-meta.html" (dict "data" .data "term" .term) }}
 {{- $count := .count }}
-<a class="tile" href="{{ $m.url }}" style="{{ printf "--accent:%s;--accent-line:%s" $m.color $m.outline | safeCSS }}">
+{{- $href := or .href $m.url }}
+<a class="tile" href="{{ $href }}" style="{{ printf "--accent:%s;--accent-line:%s" $m.color $m.outline | safeCSS }}">
   <span class="tile__icon">{{ partial "icon.html" $m.icon }}</span>
   <span class="tile__name">{{ $m.name }}</span>
   {{- with $m.desc }}<span class="tile__desc">{{ . }}</span>{{ end }}

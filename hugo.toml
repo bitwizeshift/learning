@@ -23,6 +23,9 @@ enableEmoji = true
     manifest   = '/site.webmanifest'
     themeColor = '#000000'
 
+[pagination]
+  pagerSize = 20
+
 # Taxonomies must be declared by the site to take effect.
 [taxonomies]
   concept   = 'concepts'
