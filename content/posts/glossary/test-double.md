@@ -46,7 +46,7 @@ most behavior:
   expectations are not met. Focuses on **Interaction verification** and has
   medium to high configuration and complexity.
 
-The family can be represented as a graph below
+The family can be represented graphically in the following manner:
 
 ```mermaid
 quadrantChart
@@ -58,72 +58,80 @@ quadrantChart
   quadrant-3 "Simple State"
   quadrant-4 "Complex State"
 
-  Dummy: [0.1, 0.5]
-  Stub: [0.3, 0.2]
-  Spy: [0.45, 0.8]
-  Mock: [0.8, 0.9]
-  Fake: [0.9, 0.15]
+  Stub: [0.28, 0.22]
+  Fake: [0.85, 0.18]
+  Spy: [0.32, 0.78]
+  Mock: [0.82, 0.85]
 ```
 
-## Deciding which test-double to use
+{{< note >}}
+{{< glossary term="dummy" text="Dummy" >}} does not appear in the graph.
+This is because it verifies nothing, and generally carries no logic, so it has
+no place on either axis -- it is the degenerate member of the family.
+{{< /note >}}
 
-The question quickly becomes: how do you know which double to use?
+## Deciding which Test Double to use
 
-Below is a simple flowchart to help make that decision:
+There are two ways to verify a unit's behavior, and this drives which double
+is most appropriate:
+
+1. **State verification**, which asks _"what is the observable result of the
+  action?"_ and inspects the outcome.
+2. **Interaction verification**, which asks "which calls did the unit make?" and
+  inspects the conversation between collaborators.
+
+_State verification_ is almost always the better default, because it asserts on
+the observable _behavior_ of the system rather than its _implementation_. A test
+that only checks "method `X` was called with argument `Y`" is coupled to _how_
+the code currently works; rename the method, batch two calls into one, reorder
+the steps, or even just refactor into a whole new implementation -- and the test
+breaks even though the behavior is unchanged.
+
+For that reason, prefer the most _realistic_ double that still keeps the test
+deterministic. A {{< glossary term="fake" text="fake" >}} or a
+{{< glossary term="stub" text="Stub" >}} is _usually_ the better choice because
+it behaves like the real collaborator -- returning real answers to real inputs
+-- so the test can assert on a genuine outcome instead of a call log.
+
+_Interaction verification_ is better reserved for testing a _side effect_ that
+cannot be observed otherwise from the state. For example, verifying that an
+`Observer` is notified from a `Subjet`/`Observer` pattern -- since this
+typically does not provide any visible state otherwise. An interaction like this
+is best handled through a {{< glossary term="spy" text="Spy" >}} to confirm
+that it's called as expected. Finally there are
+{{< glossary term="mock" text="mocks" >}}, which are useful for when you really
+need to confirm that things are called in a certain way or a certain order; but
+this often generates high-coupling and should be used sparingly.
+
+To represent this decision process graphically, consult the decision-tree below:
 
 ```mermaid
 flowchart TD
-  Start{"Do you need the object\n to execute working logic?"}
+  Start{"Is the collaborator actually\n exercised on the path\n under test?"}
 
-  Start -->|Yes, but a simplified version| Fake["Use a Fake\n(e.g., In-memory DB)"]
-  Start -->|No| Q2{"Does the code actually\n interact with the object?"}
+  Start -->|"No -- it only fills a\n parameter or signature"| Dummy["Use a Dummy\n(e.g. a placeholder logger\n that is never called)"]
+  Start -->|Yes| Focus{"What are you verifying\n about the unit?"}
 
-  Q2 -->|No| Dummy["Use a Dummy\n(e.g., Null object, placeholder)"]
-  Q2 -->|Yes| Q3{"Do you need to verify\n HOW it was called?"}
+  Focus -->|"An observable output\n or resulting state"| State{"Do fixed, canned answers\n suffice, or is real\n working logic required?"}
+  Focus -->|"An interaction or\n side-effect with the\n collaborator"| Interaction{"Is recording the calls and\n asserting them afterwards\n enough?"}
 
-  Q3 -->|No, just need it to return data| Stub["Use a Stub\n(e.g., Returns hardcoded JSON)"]
-  Q3 -->|Yes| Q4{"Can you assert the interactions\n AFTER the execution?"}
+  State -->|"Canned answers suffice"| Stub["Use a Stub\n(e.g. returns hardcoded\n prices for each SKU)"]
+  State -->|"Real, simplified logic"| Fake["Use a Fake\n(e.g. an in-memory database)"]
 
-  Q4 -->|Yes| Spy["Use a Spy (Preferred)\n(Records calls so you can assert them later)"]
-  Q4 -->|No, framework requires pre-programmed expectations| Mock["Use a Mock (Fallback)\n(Test fails if not called exactly as expected)"]
+  Interaction -->|"Yes, assert after the fact"| Spy["Use a Spy\n(records calls so you can\n assert on them later)"]
+  Interaction -->|"No, strict pre-set\n expectations are required"| Mock["Use a Mock\n(fails unless called exactly\n as expected)"]
 
-  class Start,Q2,Q3,Q4 decision;
-  class Spy preferred;
-  class Mock fallback;
+  class Start,Focus,State,Interaction decision;
 ```
-
-### Prefer realistic behavior
-
-There are two ways to verify a unit's work. _State verification_ asks "what is
-the observable result of the action?" and inspects the outcome. _Interaction
-verification_ asks "which calls did the unit make?" and inspects the
-conversation between collaborators.
-
-State verification is almost always the better default, because it asserts on
-the observable _behavior_ of the system rather than its _implementation_. A test
-that only checks "method `X` was called with argument `Y`" is coupled to _how_
-the code currently works; rename the method, batch two calls into one, or reorder
-the steps and the test breaks even though the behavior is unchanged. That is the
-core problem with leaning on {{< glossary term="mock" text="mocks" >}}: they push
-you toward interaction verification and bind the test to the current shape of the
-code.
-
-For that reason, prefer the most _realistic_ double that still keeps the test
-deterministic. A {{< glossary term="fake" text="fake" >}} is usually that double: it behaves like the real
-collaborator -- returning real answers to real inputs -- so the test can assert
-on a genuine outcome instead of a call log. Reserve mocks for the cases where the
-interaction genuinely _is_ the behavior under test (for example, "an email is
-sent when an order ships"), where there is no resulting state to observe.
-
 
 ## Example
 
 Consider a `total` function that prices an order through a `Catalog` abstraction.
 A {{< glossary term="mock" text="mock" >}} would assert that the catalog was
-asked for each SKU -- pinning the lookup logic in place. A _fake_ catalog with
-real prices lets the test assert what actually matters: the total that comes out.
-The double stays out of the assertion entirely; only the observable result is
-checked.
+asked for each SKU -- pinning the lookup logic in place. A
+{{< glossary term="fake" text="fake" >}} catalog with real prices lets the test
+assert what actually matters: the total that comes out. The double stays out of
+the assertion entirely; only the observable result is checked.
 
 {{< tabs >}}
 {{< tab icon="cplusplus" label="C++" >}}
