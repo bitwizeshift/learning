@@ -28,10 +28,7 @@ Nothing inside the consumer changes between the two.
 ## Pattern
 
 Dependency-injection requires accepting and working with _abstractions_ instead
-of concretions. This generally means that function calls, object members/fields,
-etc. are done working with the abstractions rather than the concretions.
-
-Within this, there are two common approaches:
+of concretions. Within this, there are two common approaches to doing this:
 
 * **Runtime dependency injection**: Done at runtime by passing in concretions
   that implements an abstraction. For functions, this is done through accepting

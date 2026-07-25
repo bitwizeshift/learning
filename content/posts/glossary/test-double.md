@@ -24,18 +24,75 @@ constructed internally.
 The term covers a spectrum of substitutes, ordered here roughly from least to
 most behavior:
 
+* **{{< glossary term="dummy" text="Dummy" >}}** -- a "do nothing" implementation
+  that is just a stand-in. Dummies do not verify anything.
+
 * **{{< glossary term="stub" text="Stub" >}}** -- returns canned answers to the
-  calls made during a test. It has no assertions of its own.
-* **{{< glossary term="spy" text="Spy" >}}** -- a stub that also records _how_ it
-  was called, so the test can inspect those calls afterwards.
+  calls made during a test. It has no assertions of its own. Focuses on
+  **State verification**. Generaly has minimal complexity and configurability.
+
 * **{{< glossary term="fake" text="Fake" >}}** -- a real, working implementation
   that takes a shortcut unsuitable for production, such as an in-memory store
-  standing in for a database.
+  standing in for a database. Focuses on **State verification** with medium
+  configurability and high complexity.
+
+* **{{< glossary term="spy" text="Spy" >}}** -- a stub that also records _how_
+  it was called, so the test can inspect those calls afterwards. Focuses on
+  **Interaction verification** and has low to medium configurability and
+  complexity.
+
 * **{{< glossary term="mock" text="Mock" >}}** -- preconfigured with
   _expectations_ about the calls it should receive, and fails the test if those
-  expectations are not met.
+  expectations are not met. Focuses on **Interaction verification** and has
+  medium to high configuration and complexity.
 
-## Prefer realistic behavior
+The family can be represented as a graph below
+
+```mermaid
+quadrantChart
+  title Types of Test Doubles
+  x-axis "Low Logic / Configurability" --> "High Logic / Configurability"
+  y-axis "Focus: State Verification" --> "Focus: Interaction Verification"
+  quadrant-1 "Complex Interaction"
+  quadrant-2 "Simple Interaction"
+  quadrant-3 "Simple State"
+  quadrant-4 "Complex State"
+
+  Dummy: [0.1, 0.5]
+  Stub: [0.3, 0.2]
+  Spy: [0.45, 0.8]
+  Mock: [0.8, 0.9]
+  Fake: [0.9, 0.15]
+```
+
+## Deciding which test-double to use
+
+The question quickly becomes: how do you know which double to use?
+
+Below is a simple flowchart to help make that decision:
+
+```mermaid
+flowchart TD
+  Start{"Do you need the object\n to execute working logic?"}
+
+  Start -->|Yes, but a simplified version| Fake["Use a Fake\n(e.g., In-memory DB)"]
+  Start -->|No| Q2{"Does the code actually\n interact with the object?"}
+
+  Q2 -->|No| Dummy["Use a Dummy\n(e.g., Null object, placeholder)"]
+  Q2 -->|Yes| Q3{"Do you need to verify\n HOW it was called?"}
+
+  Q3 -->|No, just need it to return data| Stub["Use a Stub\n(e.g., Returns hardcoded JSON)"]
+  Q3 -->|Yes| Q4{"Can you assert the interactions\n AFTER the execution?"}
+
+  Q4 -->|Yes| Spy["Use a Spy (Preferred)\n(Records calls so you can assert them later)"]
+  Q4 -->|No, framework requires pre-programmed expectations| Mock["Use a Mock (Fallback)\n(Test fails if not called exactly as expected)"]
+
+  class Start,Q2,Q3,Q4 decision;
+  class Spy preferred;
+  class Mock fallback;
+```
+
+### Prefer realistic behavior
 
 There are two ways to verify a unit's work. _State verification_ asks "what is
 the observable result of the action?" and inspects the outcome. _Interaction
@@ -57,6 +114,7 @@ collaborator -- returning real answers to real inputs -- so the test can assert
 on a genuine outcome instead of a call log. Reserve mocks for the cases where the
 interaction genuinely _is_ the behavior under test (for example, "an email is
 sent when an order ships"), where there is no resulting state to observe.
+
 
 ## Example
 
