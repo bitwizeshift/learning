@@ -18,11 +18,12 @@ received, and leaves the judgment to the test.
 ## How a spy works
 
 A spy is {{< glossary term="dependency-injection" text="injected" >}} in place of
-a real collaborator and quietly captures each call. After the action, the test
-reads what the spy recorded and asserts on it. This is _interaction
-verification_ -- the test checks the conversation between objects rather than a
-returned value -- which makes a spy the natural tool when the behavior under test
-is an outgoing effect that leaves no state behind.
+a real {{< glossary term="collaborator" text="collaborator" >}} and quietly
+captures each call. After the action, the test reads what the spy recorded and
+asserts on it. This is _interaction verification_ -- the test checks the
+conversation between objects rather than a returned value -- which makes a spy
+the natural tool when the behavior under test is an outgoing effect that leaves
+no state behind.
 
 A spy and a {{< glossary term="mock" text="mock" >}} both verify interactions;
 the difference is where the expectations live. A mock is told up front how it

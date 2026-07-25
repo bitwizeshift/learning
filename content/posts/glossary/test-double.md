@@ -8,10 +8,10 @@ toc = false
 +++
 
 **Test double** is the umbrella term for any object that stands in for a real
-collaborator during a test -- just as a stunt double stands in for an actor. The
-family includes dummies, stubs, spies, fakes, and
-{{< glossary term="mock" text="mocks" >}}, each substituting a real dependency to
-keep the unit under test isolated and deterministic.
+{{< glossary term="collaborator" text="collaborator" >}} during a test -- just
+as a stunt double stands in for an actor. The family includes dummies, stubs,
+spies, fakes, and {{< glossary term="mock" text="mocks" >}}, each substituting a
+real dependency to keep the unit under test isolated and deterministic.
 
 <!--more-->
 

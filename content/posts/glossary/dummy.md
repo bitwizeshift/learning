@@ -18,12 +18,13 @@ to satisfy a signature.
 ## How a dummy works
 
 A dummy is {{< glossary term="dependency-injection" text="injected" >}} in place
-of a real collaborator, just like any other double, but the resemblance ends
-there. Where a {{< glossary term="stub" text="stub" >}} hands back answers the
-unit goes on to use, a dummy is handed to a unit that never touches it on the
-path under test. A constructor demands a `Notifier`; the method you are testing
-rejects its input before any notification would be sent -- so the parameter still
-has to be filled, but with something that does nothing.
+of a real {{< glossary term="collaborator" text="collaborator" >}}, just like
+any other double, but the resemblance ends there. Where a
+{{< glossary term="stub" text="stub" >}} hands back answers the unit goes on to
+use, a dummy is handed to a unit that never touches it on the path under test.
+A constructor demands a `Notifier`; the method you are testing rejects its input
+before any notification would be sent -- so the parameter still has to be
+filled, but with something that does nothing.
 
 Because the unit never calls it, a dummy needs no canned values and records
 nothing. Often it is an empty implementation; some teams make it throw if any

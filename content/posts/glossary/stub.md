@@ -9,8 +9,9 @@ toc = false
 
 A **stub** is a {{< glossary term="test-double" text="test double" >}} that
 returns canned, pre-arranged answers to the calls a unit makes during a test. It
-supplies the inputs a unit needs from a collaborator -- a configured user, a
-fixed exchange rate, an allow-or-deny decision -- without the cost or
+supplies the inputs a unit needs from a
+{{< glossary term="collaborator" text="collaborators" >}} -- a configured user,
+a fixed exchange rate, an allow-or-deny decision -- without the cost or
 nondeterminism of the real thing. Unlike a {{< glossary term="mock" text="mock" >}},
 a stub makes no assertions of its own; it only feeds the unit so the test can
 check what the unit does with the answer.

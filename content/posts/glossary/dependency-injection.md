@@ -8,10 +8,11 @@ toc = false
 +++
 
 **Dependency injection** (DI) is a technique where an object receives the
-collaborators it needs from the outside -- typically through its constructor --
-instead of constructing or looking them up itself. The object depends on an
-_abstraction_ (an `interface`, `protocol`, `trait`, etc) and the concrete
-implementation is supplied by the caller that constructs it.
+{{< glossary term="collaborator" text="collaborators" >}} it needs from the
+outside -- typically during construction -- instead of constructing or
+looking them up itself. The object depends on an _abstraction_ (an `interface`,
+`protocol`, `trait`, etc) and the concrete implementation is supplied by the
+caller that constructs it.
 
 <!--more-->
 

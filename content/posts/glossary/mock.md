@@ -17,8 +17,9 @@ methods were invoked, with what arguments, and how often.
 
 ## How a mock works
 
-A mock is supplied to the unit under test in place of a real collaborator,
-usually via {{< glossary term="dependency-injection" text="dependency injection" >}}.
+A mock is supplied to the unit under test in place of a real
+{{< glossary term="collaborator" text="collaborator" >}}, usually via
+{{< glossary term="dependency-injection" text="dependency injection" >}}.
 It records every call it receives, and the test then checks those calls against
 its expectations. This is _interaction verification_: the test passes or fails
 based on the conversation between objects, not on any resulting state.
