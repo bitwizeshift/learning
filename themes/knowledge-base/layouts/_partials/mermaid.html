@@ -19,9 +19,15 @@
     const src = block.querySelector('.mermaid-src');
     if (!src) return;
     try {
-      const { svg } = await mermaid.render('mermaid-' + i, src.textContent.trim());
+      const source = src.textContent.trim();
+      const { svg } = await mermaid.render('mermaid-' + i, source);
       const out = document.createElement('div');
       out.className = 'mermaid-rendered';
+      // A quadrant chart draws its title and axis labels in a dark fill regardless
+      // of theme, so they vanish on a dark page. Tag it so CSS can give just the
+      // quadrant chart a fixed light background, keeping those labels legible in
+      // both colour schemes.
+      if (/^quadrantChart\b/.test(source)) out.classList.add('mermaid-rendered--quadrant');
       out.innerHTML = svg;
       const fallback = block.querySelector('.mermaid-fallback');
       if (fallback) fallback.replaceWith(out); else block.appendChild(out);

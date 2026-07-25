@@ -109,6 +109,9 @@
   overflow-x: auto;
 }
 .mermaid-rendered svg { max-width: 100%; height: auto; margin-inline: auto; }
+/* Quadrant charts label their title/axes in a fixed dark fill; a constant light
+   background keeps them readable in both light and dark mode. */
+.mermaid-rendered--quadrant svg { background: #fff; }
 
 /* ---- Alert / callout shortcodes ---- */
 .alert {
