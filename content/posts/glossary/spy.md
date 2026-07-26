@@ -2,7 +2,7 @@
 title = 'Spy'
 date = 2026-07-23
 slug = 'spy'
-url = '/glossary/spy'
+aliases = ['/glossary/spy']
 resources = ['glossary']
 tags = ['spy', 'test-double', 'testing']
 toc = false

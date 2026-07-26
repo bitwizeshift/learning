@@ -2,7 +2,7 @@
 title = 'Stub'
 date = 2026-07-23
 slug = 'stub'
-url = '/glossary/stub'
+aliases = ['/glossary/stub']
 resources = ['glossary']
 tags = ['stub', 'test-double', 'testing']
 toc = false

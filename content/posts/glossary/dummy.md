@@ -2,7 +2,7 @@
 title = 'Dummy'
 date = 2026-07-24
 slug = 'dummy'
-url = '/glossary/dummy'
+aliases = ['/glossary/dummy']
 resources = ['glossary']
 tags = ['dummy', 'test-double', 'testing']
 toc = false

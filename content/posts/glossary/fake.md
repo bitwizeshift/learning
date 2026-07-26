@@ -2,7 +2,7 @@
 title = 'Fake'
 date = 2026-07-23
 slug = 'fake'
-url = '/glossary/fake'
+aliases = ['/glossary/fake']
 resources = ['glossary']
 tags = ['fake', 'test-double', 'testing']
 toc = false

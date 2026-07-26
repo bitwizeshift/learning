@@ -2,7 +2,7 @@
 title = 'Interface Segregation Principle'
 date = 2026-07-25
 slug = 'interface-segregation-principle'
-url = '/glossary/interface-segregation-principle'
+aliases = ['/glossary/interface-segregation-principle']
 resources = ['glossary']
 tags = ['solid', 'interface-segregation-principle', 'design']
 toc = false

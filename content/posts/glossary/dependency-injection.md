@@ -2,7 +2,7 @@
 title = 'Dependency Injection'
 date = 2026-07-22
 slug = 'dependency-injection'
-url = '/glossary/dependency-injection'
+aliases = ['/glossary/dependency-injection']
 resources = ['glossary']
 tags = ['dependency-injection', 'testing']
 toc = false

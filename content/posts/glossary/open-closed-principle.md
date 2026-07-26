@@ -2,7 +2,7 @@
 title = 'Open/Closed Principle'
 date = 2026-07-25
 slug = 'open-closed-principle'
-url = '/glossary/open-closed-principle'
+aliases = ['/glossary/open-closed-principle']
 resources = ['glossary']
 tags = ['solid', 'open-closed-principle', 'design']
 toc = false

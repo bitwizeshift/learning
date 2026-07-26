@@ -2,7 +2,7 @@
 title = 'Fixture'
 date = 2026-06-26
 slug = 'fixture'
-url = '/glossary/fixture'
+aliases = ['/glossary/fixture']
 resources = ['glossary']
 description = 'The fixed baseline state and setup a test runs against, established before the action under test.'
 toc = false

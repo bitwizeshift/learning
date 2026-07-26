@@ -2,7 +2,7 @@
 title = 'Liskov Substitution Principle'
 date = 2026-07-25
 slug = 'liskov-substitution-principle'
-url = '/glossary/liskov-substitution-principle'
+aliases = ['/glossary/liskov-substitution-principle']
 resources = ['glossary']
 tags = ['solid', 'liskov-substitution-principle', 'design']
 toc = false
