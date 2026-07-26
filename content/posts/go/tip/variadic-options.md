@@ -6,7 +6,7 @@ slug = 'GO-TIP-001'
 url = '/tip/go-tip-001'
 resources = ['tip']
 toolchains = ['go']
-concepts = ['testing']
+concepts = ['design']
 [focus]
 toolchains = ['go']
 toc = true
