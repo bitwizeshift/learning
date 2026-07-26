@@ -3,13 +3,14 @@ title = 'Variadic Options'
 date = 2026-07-25
 id = 'GO-TIP-001'
 slug = 'GO-TIP-001'
-aliases = ['/tip/go-tip-001']
+aliases = ['/tip/go-tip-001', '/go-tip-001']
 resources = ['tip']
 toolchains = ['go']
 concepts = ['design']
+
+toc = true
 [focus]
 toolchains = ['go']
-toc = true
 +++
 
 You want to support a number of optional custom fields for a function or type
@@ -37,7 +38,6 @@ Follow the variadic `Option` pattern!
    func WithFoo(...) Option { ... }
    func WithBar(...) Option { ... }
    ```
-
 
 3. Collect `Option`s variadically, and use the build configuration:
 
@@ -159,3 +159,18 @@ powerful improvement over a `type Options struct` approach.
 {{</ note >}}
 
 {{</ details >}}
+
+## Additional Notes
+
+The approach using a {{< glossary term="sealed-interface" text="sealed" >}}
+`interface` is preferred over a `func`-based definition like:
+
+```go
+type Option func(*config)
+```
+
+A `func`-based definition exposes an unnamable/unexported type, and leaks
+implementation details that they don't need to know to the caller. It also
+exposes the ability to `reflect` over the signature to get this type name for
+the caller, which means the caller can construct your unexported type. This
+leads to a **leaky abstraction**.
