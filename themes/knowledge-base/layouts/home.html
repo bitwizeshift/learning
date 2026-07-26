@@ -8,17 +8,22 @@
 
   {{ range sort hugo.Data.dimensions.dimension "weight" }}
     {{ $dim := . }}
-    <section class="dim-group">
-      <h2 class="dim-group__title">{{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span></h2>
-      <div class="tiles">
-        {{ range $term, $meta := index hugo.Data $dim.data }}
-          {{ if not $meta.nocross }}
-            {{ $count := len (index site.Taxonomies $dim.taxonomy $term) }}
-            {{ partial "tile.html" (dict "data" $dim.data "term" $term "count" $count) }}
-          {{ end }}
+    {{ $tiles := slice }}
+    {{ range $term, $meta := index hugo.Data $dim.data }}
+      {{ if not $meta.nocross }}
+        {{ with (len (index site.Taxonomies $dim.taxonomy $term)) }}
+          {{ $tiles = $tiles | append (dict "data" $dim.data "term" $term "count" .) }}
         {{ end }}
-      </div>
-    </section>
+      {{ end }}
+    {{ end }}
+    {{ with $tiles }}
+      <section class="dim-group">
+        <h2 class="dim-group__title">{{ partial "icon.html" $dim.icon }}<span>{{ $dim.title }}</span></h2>
+        <div class="tiles">
+          {{ range . }}{{ partial "tile.html" . }}{{ end }}
+        </div>
+      </section>
+    {{ end }}
   {{ end }}
 </div>
 {{ end }}

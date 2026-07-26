@@ -16,6 +16,8 @@
     {{- range $resource, $tmeta := index hugo.Data $resourceData }}
       {{- /* `nocross` resources (e.g. the glossary) are not dropdowns; see below. */}}
       {{- if not $tmeta.nocross }}
+      {{- /* Skip resources with no posts; the dropdown links to the resource term page. */}}
+      {{- if gt (len (index site.Taxonomies.resources $resource)) 0 }}
       {{- $tm := partial "term-meta.html" (dict "data" $resourceData "term" $resource) }}
       <li class="nav__item nav__item--dropdown">
         <a class="nav__link" href="{{ printf "%s/%s/" $resourceData $resource | relLangURL }}">
@@ -23,10 +25,18 @@
         </a>
         <ul class="dropdown dropdown--grouped">
           {{- range $fdim := $focusDims }}
+            {{- /* Keep only focus terms whose (resource, term) merged page has posts. */}}
+            {{- $terms := slice }}
+            {{- range $term, $meta := index hugo.Data $fdim.data }}
+              {{- if gt (partial "focus-count.html" (dict "resource" $resource "axis" $fdim.data "term" $term)) 0 }}
+                {{- $terms = $terms | append $term }}
+              {{- end }}
+            {{- end }}
+            {{- with $terms }}
             <li class="dropdown__group">
               <p class="dropdown__group-head">{{ partial "icon.html" $fdim.icon }}<span>{{ $fdim.title }}</span></p>
               <ul class="dropdown__group-list">
-                {{- range $term, $meta := index hugo.Data $fdim.data }}
+                {{- range $term := . }}
                   {{- $fm := partial "term-meta.html" (dict "data" $fdim.data "term" $term) }}
                   <li>
                     <a class="dropdown__link" href="{{ printf "%s/%s/" $resource $term | relLangURL }}" style="{{ printf "--accent:%s" $fm.color | safeCSS }}">
@@ -36,20 +46,24 @@
                 {{- end }}
               </ul>
             </li>
+            {{- end }}
           {{- end }}
         </ul>
       </li>
+      {{- end }}
       {{- end }}
     {{- end }}
     {{- /* `nocross` resources (e.g. the glossary) appear last as plain links. */}}
     {{- range $resource, $tmeta := index hugo.Data $resourceData }}
       {{- if $tmeta.nocross }}
+      {{- if gt (len (index site.Taxonomies.resources $resource)) 0 }}
         {{- $tm := partial "term-meta.html" (dict "data" $resourceData "term" $resource) }}
         <li class="nav__item">
           <a class="nav__link" href="{{ printf "%s/%s/" $resourceData $resource | relLangURL }}">
             {{ partial "icon.html" $tm.icon }}<span>{{ $tm.name }}</span>
           </a>
         </li>
+      {{- end }}
       {{- end }}
     {{- end }}
   </ul>

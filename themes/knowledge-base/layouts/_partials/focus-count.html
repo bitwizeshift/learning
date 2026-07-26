@@ -1,0 +1,14 @@
+{{- /*
+  Count posts of a resource opted into a focus axis+term via `focus` frontmatter.
+  Input : (dict "resource" "best-practice" "axis" "concepts" "term" "testing")
+  Output: int
+*/ -}}
+{{- $axis := .axis }}
+{{- $term := .term }}
+{{- $matched := slice }}
+{{- with index site.Taxonomies.resources .resource }}
+  {{- range .Pages }}
+    {{- with .Params.focus }}{{ if in (index . $axis) $term }}{{ $matched = $matched | append . }}{{ end }}{{ end }}
+  {{- end }}
+{{- end }}
+{{- return (len $matched) }}
