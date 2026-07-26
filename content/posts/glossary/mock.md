@@ -21,15 +21,17 @@ methods were invoked, with what arguments, and how often.
 A mock is supplied to the unit under test in place of a real
 {{< glossary term="collaborator" text="collaborator" >}}, usually via
 {{< glossary term="dependency-injection" text="dependency injection" >}}.
-It records every call it receives, and the test then checks those calls against
-its expectations. This is _interaction verification_: the test passes or fails
-based on the conversation between objects, not on any resulting state.
+It is configured up front with the calls it expects, checks each incoming call
+against those expectations, and reports a failure itself when they are not met.
+This is _interaction verification_: the test passes or fails based on the
+conversation between objects, not on any resulting state.
 
 Most languages have a library that generates mocks so you do not hand-write the
-recording logic, but the shape is always the same -- capture the calls, then
-assert on them. A double that records passively and leaves those assertions to
-the test is a {{< glossary term="spy" text="spy" >}}; a mock goes further by
-baking the expectations in and failing itself when they are not met.
+expectation logic, but the shape is always the same -- set the expectations,
+exercise the unit, then let the mock verify itself. A double that instead
+records calls passively and leaves the assertions to the test is a
+{{< glossary term="spy" text="spy" >}}; a mock goes further by baking the
+expectations in and failing when they are not satisfied.
 
 ## The tradeoff
 
@@ -51,8 +53,8 @@ interaction is the observable result.
 
 Sending a notification is a good fit for a mock: when an order is placed, the
 service is _supposed_ to notify the customer, and that outgoing call is the whole
-point. There is no local state to assert on, so the test verifies the
-interaction directly.
+point. There is no local state to assert on, so the mock is given the call it
+expects and verifies that interaction itself.
 
 {{< tabs >}}
 {{< tab icon="cplusplus" label="C++" >}}
@@ -80,29 +82,33 @@ private:
 ```
 
 ```cpp
-// A mock: records the recipients it was asked to notify.
+// A mock: expects to notify one recipient, and verifies it itself.
 class MockNotifier final : public Notifier {
 public:
+  explicit MockNotifier(std::string expected) : m_expected(std::move(expected)) {}
+
   auto send(const std::string& to, const std::string& /*message*/) -> void override {
-    m_recipients.push_back(to);
+    REQUIRE(to == m_expected);
+    ++m_calls;
   }
 
-  auto recipients() const -> const std::vector<std::string>& { return m_recipients; }
+  auto verify() const -> void { REQUIRE(m_calls == 1); }
 
 private:
-  std::vector<std::string> m_recipients;
+  std::string m_expected;
+  int m_calls = 0;
 };
 
 TEST_CASE("place notifies the customer") {
   // Arrange
-  MockNotifier notifier;
+  MockNotifier notifier{"ada@example.com"};
   OrderService service{notifier};
 
   // Act
   service.place("ada@example.com");
 
   // Assert
-  REQUIRE(notifier.recipients() == std::vector<std::string>{"ada@example.com"});
+  notifier.verify();
 }
 ```
 
@@ -136,33 +142,43 @@ func (s *Service) Place(customer string) error {
 ```go
 package orders_test
 
-// mockNotifier records the recipients it was asked to notify.
+// mockNotifier expects to notify one recipient, and verifies it itself.
 type mockNotifier struct {
-  recipients []string
+  t        *testing.T
+  expected string
+  calls    int
 }
 
 func (m *mockNotifier) Send(to, message string) error {
-  m.recipients = append(m.recipients, to)
+  m.t.Helper()
+  if to != m.expected {
+    m.t.Errorf("Send() notified %q, want %q", to, m.expected)
+  }
+  m.calls++
   return nil
+}
+
+func (m *mockNotifier) verify() {
+  m.t.Helper()
+  if m.calls != 1 {
+    m.t.Errorf("Send() called %d times, want 1", m.calls)
+  }
 }
 
 func TestPlaceNotifiesCustomer(t *testing.T) {
   t.Parallel()
 
   // Arrange
-  notifier := &mockNotifier{}
+  notifier := &mockNotifier{t: t, expected: "ada@example.com"}
   service := orders.NewService(notifier)
 
   // Act
-  err := service.Place("ada@example.com")
-
-  // Assert
-  if err != nil {
+  if err := service.Place("ada@example.com"); err != nil {
     t.Fatalf("Place() returned an unexpected error: %v", err)
   }
-  if len(notifier.recipients) != 1 || notifier.recipients[0] != "ada@example.com" {
-    t.Errorf("notified %v, want one message to %q", notifier.recipients, "ada@example.com")
-  }
+
+  // Assert
+  notifier.verify()
 }
 ```
 
@@ -188,20 +204,31 @@ class Service:
 ```
 
 ```python
-from unittest.mock import ANY, Mock
+from orders import Service
 
-from orders import Notifier, Service
+# A mock: expects to notify one recipient, and verifies it itself.
+class MockNotifier:
+  def __init__(self, expected: str) -> None:
+    self._expected = expected
+    self._calls = 0
+
+  def send(self, to: str, message: str) -> None:
+    assert to == self._expected, f"notified {to!r}, want {self._expected!r}"
+    self._calls += 1
+
+  def verify(self) -> None:
+    assert self._calls == 1, f"send called {self._calls} times, want 1"
 
 def test_place_notifies_the_customer():
   # Arrange
-  notifier = Mock(spec=Notifier)
+  notifier = MockNotifier("ada@example.com")
   service = Service(notifier)
 
   # Act
   service.place("ada@example.com")
 
   # Assert
-  notifier.send.assert_called_once_with("ada@example.com", ANY)
+  notifier.verify()
 ```
 
 {{< /tab >}}
@@ -234,33 +261,44 @@ impl<'a> OrderService<'a> {
 
 ```rust
 // tests/orders.rs -- a separate crate that sees only the public API.
-use std::cell::RefCell;
+use std::cell::Cell;
 
 use orders::{Notifier, OrderService};
 
-// A mock: records the recipients it was asked to notify.
-#[derive(Default)]
+// A mock: expects to notify one recipient, and verifies it itself.
 struct MockNotifier {
-  recipients: RefCell<Vec<String>>,
+  expected: String,
+  calls: Cell<u32>,
+}
+
+impl MockNotifier {
+  fn new(expected: &str) -> Self {
+    Self { expected: expected.to_string(), calls: Cell::new(0) }
+  }
+
+  fn verify(&self) {
+    assert_eq!(self.calls.get(), 1);
+  }
 }
 
 impl Notifier for MockNotifier {
   fn send(&self, to: &str, _message: &str) {
-    self.recipients.borrow_mut().push(to.to_string());
+    assert_eq!(to, self.expected);
+    self.calls.set(self.calls.get() + 1);
   }
 }
 
 #[test]
 fn place_notifies_the_customer() {
   // Arrange
-  let notifier = MockNotifier::default();
+  let notifier = MockNotifier::new("ada@example.com");
   let service = OrderService::new(&notifier);
 
   // Act
   service.place("ada@example.com");
 
   // Assert
-  assert_eq!(*notifier.recipients.borrow(), ["ada@example.com"]);
+  notifier.verify();
 }
 ```
 
