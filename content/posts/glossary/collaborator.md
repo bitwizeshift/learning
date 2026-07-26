@@ -2,6 +2,7 @@
 title = 'Collaborator'
 date = 2026-07-25
 slug = 'collaborator'
+url = '/glossary/collaborator'
 resources = ['glossary']
 tags = ['collaborator', 'testing']
 toc = false

@@ -2,6 +2,7 @@
 title = 'Mock'
 date = 2026-06-26
 slug = 'mock'
+url = '/glossary/mock'
 resources = ['glossary']
 tags = ['mock', 'testing']
 toc = false

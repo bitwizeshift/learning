@@ -2,6 +2,7 @@
 title = 'Single Responsibility Principle'
 date = 2026-07-25
 slug = 'single-responsibility-principle'
+url = '/glossary/single-responsibility-principle'
 resources = ['glossary']
 tags = ['solid', 'single-responsibility-principle', 'design']
 toc = false

@@ -2,6 +2,7 @@
 title = 'SOLID Principles'
 date = 2026-07-25
 slug = 'solid-principles'
+url = '/glossary/solid-principles'
 resources = ['glossary']
 tags = ['solid', 'design', 'architecture']
 toc = false

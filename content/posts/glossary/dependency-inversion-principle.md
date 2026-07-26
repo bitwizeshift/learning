@@ -2,6 +2,7 @@
 title = 'Dependency Inversion Principle'
 date = 2026-07-25
 slug = 'dependency-inversion-principle'
+url = '/glossary/dependency-inversion-principle'
 resources = ['glossary']
 tags = ['solid', 'dependency-inversion-principle', 'design']
 toc = false
