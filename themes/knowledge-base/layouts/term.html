@@ -26,7 +26,7 @@
           {{ with .Params.focus }}{{ if in (index . $axis) $fterm }}{{ $matched = $matched | append . }}{{ end }}{{ end }}
         {{ end }}
         {{ with len $matched }}
-          {{ $tiles = $tiles | append (dict "data" $axis "term" $fterm "count" . "href" (printf "/%s/%s/" $term $fterm | relLangURL)) }}
+          {{ $tiles = $tiles | append (dict "data" $axis "term" $fterm "count" . "href" (printf "%s/%s/" $term $fterm | relLangURL)) }}
         {{ end }}
       {{ end }}
       {{ with $tiles }}
@@ -51,7 +51,7 @@
           {{ end }}
         {{ end }}
         {{ with len $matched }}
-          {{ $tiles = $tiles | append (dict "data" $special.data "term" $resource "count" . "href" (printf "/%s/%s/" $resource $term | relLangURL)) }}
+          {{ $tiles = $tiles | append (dict "data" $special.data "term" $resource "count" . "href" (printf "%s/%s/" $resource $term | relLangURL)) }}
         {{ end }}
       {{ end }}
     {{ end }}
