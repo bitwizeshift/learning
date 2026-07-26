@@ -3,7 +3,6 @@ title = 'Prefer Table-Driven Tests'
 date = 2026-05-12
 id = 'GO-001'
 slug = 'GO-001'
-url = '/best-practice/go/go-001'
 aliases = [
   '/go-001',
 ]
