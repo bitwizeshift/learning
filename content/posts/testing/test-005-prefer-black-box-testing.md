@@ -15,14 +15,17 @@ concepts = ['testing']
 
 Prefer testing the **public interface** of a unit over its private
 implementation details. A test should exercise what a unit promises to its
-callers, not how it achieves it internally. This style is called **black-box
-testing**: the tester knows the external behavior but treats the internal
-structure as opaque.
+callers, not how it achieves it internally.
+
+This style is called **black-box testing**: the tester knows the external
+behavior but treats the internal structure as opaque. The helpers still get
+covered, because the public entry point is what calls them -- but nothing in the
+test breaks when one is renamed, split, or inlined.
 
 {{< tip >}}
 If you find yourself needing to reach into private helpers to test them, that is
-usually a design smell. Consider extracting those helpers into their own unit
-with its own public interface, and test them there.
+usually a design smell. Consider extracting those helpers into their own
+testable unit with its own public interface, and test them there.
 {{< /tip >}}
 
 <!--more-->

@@ -14,17 +14,20 @@ concepts = ['testing']
 +++
 
 Do not write code that detects whether it is running under test and changes its
-behavior -- **test-aware code**. A unit that branches on a test flag, the
+behavior, known as **test-aware code**. A unit that branches on a test flag, the
 presence of a test runner, the presence of an environment variable, or a
-test-only build runs a different path under test than it does in production, so
-the test verifies behavior you do not ship.
-Instead, make code testable through design -- typically **dependency injection** --
-so that tests substitute collaborators without the unit ever knowing.
+test-only build fundamentally runs a _different path_ under test than it does in
+production, so the test _verifies behavior you do not ship_.
+
+Instead, make code testable through design, typically
+{{< glossary term="dependency-injection" text="dependency injection" >}}, so
+that tests substitute {{< glossary term="collaborator" text="collaborators" >}}
+without the unit ever knowing.
 
 {{< tip >}}
 If a test only passes because the code skipped its real work, the test is
-exercising the test-mode path, not the production behavior. It has little value
-as a test.
+exercising the _test-mode_ path, not the _production behavior_. It has little
+value as a test.
 {{< /tip >}}
 
 <!--more-->
@@ -32,6 +35,7 @@ as a test.
 ## Motivation
 
 The purpose of a test is to give confidence that the shipped code works.
+
 Test-aware code defeats that purpose: the branch the test takes is, by
 construction, not the branch production takes. The production branch -- the
 database write, the network call, the real side effect -- is usually the riskiest
@@ -44,7 +48,7 @@ a false sense of security.
 A test is only meaningful if it exercises the same code that runs in production.
 Removing test-awareness restores that property: with the test flag gone, there is
 a single code path, and the test drives it the same way a real caller would. The
-difference between test and production then lives entirely in the *collaborators*
+difference between test and production then lives entirely in the _collaborators_
 that are supplied from the outside, **not** in the unit's own logic.
 
 Dependency injection is what makes this possible without test-awareness; by
@@ -61,17 +65,17 @@ persists it. The naive, test-aware version suppresses the persistence under test
 the injected version supplies the datastore from the outside so the same code
 runs everywhere.
 
-The *mechanism* that tempts test-awareness differs by language -- a flag, a
+The _mechanism_ that tempts test-awareness differs by language -- a flag, a
 preprocessor guard, runner detection, or a build configuration. Each dropdown
 notes the relevant one.
 
 {{< tabs >}}
 {{< tab icon="cplusplus" label="C++" >}}
 
-The common test-aware mechanism in C++ is a preprocessor guard (`#ifdef
-UNIT_TEST`) or a runtime flag that strips real work from test builds. Both make
-the test build compile different code than production. Prefer injecting an
-abstract interface that a test can implement.
+The common test-aware mechanism in C++ is a preprocessor guard
+(`#ifdef UNIT_TEST`) or a runtime flag that strips real work from test builds.
+Both make the test build compile different code than production. Prefer
+injecting an abstract interface that a test can implement.
 
 ### ❌ Bad Example
 
@@ -152,8 +156,9 @@ TEST_CASE("deposit increases the balance and persists it") {
 
 Go encourages dependency injection through interfaces, and collaborators can be
 supplied as struct fields, constructor arguments, or functional options. The
-test-aware temptation is a boolean field like `TestMode`; the fix is to inject the
-datastore behind an interface so production and tests run the same method body.
+test-aware temptation is a boolean field like `TestMode`; the fix is to inject
+the datastore behind an interface so production and tests run the same method
+body.
 
 ### ❌ Bad Example
 
@@ -410,7 +415,7 @@ fn deposit_increases_balance_and_persists_it() {
 ## Resources
 
 * **[Working Effectively with Legacy Code][feathers] by Michael Feathers** -
-  covers *seams* and dependency injection for making code testable without
+  covers _seams_ and dependency injection for making code testable without
   changing its behavior.
 
 * **[Dependency injection (Wikipedia)][di]** - the pattern used to supply

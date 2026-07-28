@@ -14,14 +14,13 @@ concepts = ['testing']
 +++
 
 A unit test must not depend on or alter state that lives outside its own scope.
-Do not read or mutate global variables, singletons, static fields, the
-filesystem, environment variables, or any other resource that another test can
-also reach.
+Avoid altering process-global state (e.g. env), modifying globals, mutating
+singletons, etc.
 
-{{< tip >}}
-If a test only passes when the suite runs in a particular order, it is sharing
-state with another test.
-{{< /tip >}}
+Instead, design the code to leverage well-defined interfaces that can be
+tested with {{< glossary term="test-double" text="test doubles" >}} via
+{{< glossary term="dependency-injection" text="dependency injection" >}}
+instead, to reduce reliance on global logic.
 
 <!--more-->
 

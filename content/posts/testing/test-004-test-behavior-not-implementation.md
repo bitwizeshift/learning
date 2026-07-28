@@ -14,14 +14,17 @@ concepts = ['testing']
 +++
 
 Write tests against the **observable behavior** of code, not the way that
-behavior is implemented. Avoid expectations that restate the implementation --
-most commonly an expected value copied verbatim from the function body. Such a
-test passes by construction and verifies nothing about correctness.
+behavior is implemented; test **properties** of the functionality instead.
 
-{{< tip >}}
-If the only way to derive the expected value is to read the implementation, you
-are testing the implementation. Assert a documented property instead.
-{{< /tip >}}
+Whenever the only way to derive an expected value is to go read the code you are
+testing, you are testing the implementation -- assert a documented property
+instead.
+
+{{< note >}}
+Reimplementing parts of the thing being tested results in high-coupling, and
+worse: low value tests. If the implementation is wrong, reimplementing the
+behavior will result in a passing test, but an invalid unit.
+{{< /note >}}
 
 <!--more-->
 
